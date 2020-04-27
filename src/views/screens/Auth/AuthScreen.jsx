@@ -12,8 +12,12 @@ class AuthScreen extends React.Component {
               <h3>Log In</h3>
               <p className="mt-4">
                 Welcome back.
+<<<<<<< HEAD
                 <br />
                 Please, login to your account
+=======
+                <br /> Please, login to your account
+>>>>>>> 6dba32738aaf227d6a159edcd2d87bf720b06f33
               </p>
               <TextField placeholder="Username" className="mt-5" />
               <TextField placeholder="Password" className="mt-2" />

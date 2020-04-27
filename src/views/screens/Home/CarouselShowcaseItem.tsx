@@ -21,7 +21,7 @@ const CarouselShowcaseItem = ({
   productName,
   image,
   onExited,
-  onExiting,
+  onExiting
 }: ShowcaseItemProps) => {
   return (
     <CarouselItem>
@@ -45,8 +45,9 @@ const CarouselShowcaseItem = ({
                   backgroundColor: "#CCEAD7",
                   borderColor: "#CCEAD7",
                   borderRadius: "16px",
-                  fontWeight: "bolder",
+                  fontWeight: "bolder"
                 }}
+                onClick=""
               >
                 BUY NOW
               </ButtonUI>

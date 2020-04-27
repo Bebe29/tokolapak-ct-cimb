@@ -19,7 +19,8 @@ export default (state = init_state, action) => {
         username,
         fullName,
         role,
-        id
+        id,
+        errMsg: ""
       };
     case ON_LOGIN_FAIL:
       return { ...state, errMsg: action.payload };

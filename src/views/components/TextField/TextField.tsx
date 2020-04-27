@@ -10,7 +10,7 @@ type TextFieldProps = {
 class TextField extends React.Component<TextFieldProps> {
   state = {
     searchBarIsFocused: false,
-    searcBarInput: "",
+    searcBarInput: ""
   };
 
   onFocus = () => {

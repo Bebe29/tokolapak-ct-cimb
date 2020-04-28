@@ -5,11 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faShippingFast,
   faMoneyBillWave,
-  faHeadset,
+  faHeadset
 } from "@fortawesome/free-solid-svg-icons";
 import "./Home.css";
 
 import ProductCard from "../../components/Cards/ProductCard.tsx";
+import Axios from "axios";
+import { API_URL } from "../../../constants/API";
 
 import iPhoneX from "../../../assets/images/Showcase/iPhone-X.png";
 import iPhone8 from "../../../assets/images/Showcase/iPhone-8.png";
@@ -28,27 +30,28 @@ const dummy = [
     begitu cerdas sehingga dapat merespons dengan sekali sentuh,
     atau bahkan sekali pandang. Dengan iPhone X, visi ini menjadi
     kenyataan. Selamat datang, masa depan.`,
-    id: 1,
+    id: 1
   },
   {
     productName: "iPhone 8",
     image: iPhone8,
     desc: `iPhone 8 memperkenalkan desain kaca yang sepenuhnya baru. Kamera paling populer di dunia, kini lebih baik lagi. Chip yang paling andal dan cerdas di ponsel pintar. Pengisian daya nirkabel yang begitu mudah dilakukan. Dan pengalaman augmented reality yang tak pernah mungkin sebelumnya. iPhone 8. iPhone generasi baru.`,
-    id: 2,
+    id: 2
   },
   {
     productName: "iPad Pro Gen 3",
     image: iPadPro,
     desc: `
     iPad Pro baru telah didesain ulang seutuhnya dan dilengkapi dengan teknologi Apple yang paling canggih. Ini akan membuat Anda berpikir ulang apa yang iPad mampu lakukan`,
-    id: 2,
-  },
+    id: 2
+  }
 ];
 
 class Home extends React.Component {
   state = {
     activeIndex: 0,
     animating: false,
+    bestSellerData: []
   };
 
   renderCarouselItems = () => {
@@ -73,7 +76,7 @@ class Home extends React.Component {
                       borderRadius: "16px",
                       fontWeight: "bolder",
                       position: "absolute",
-                      bottom: 420,
+                      bottom: 420
                     }}
                   >
                     BUY NOW
@@ -107,6 +110,26 @@ class Home extends React.Component {
         : this.state.activeIndex - 1;
     this.setState({ activeIndex: prevIndex });
   };
+
+  getBestSellerData = () => {
+    Axios.get(`${API_URL}/products`)
+      .then(res => {
+        this.setState({ bestSellerData: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  renderProduct = () => {
+    return this.state.bestSellerData.map(val => {
+      return <ProductCard className="m-2" data={val} />;
+    });
+  };
+
+  componentDidMount() {
+    this.getBestSellerData();
+  }
 
   render() {
     return (
@@ -147,11 +170,12 @@ class Home extends React.Component {
           {/* BEST SELLER SECTION */}
           <h2 className="text-center font-weight-bolder mt-5">BEST SELLER</h2>
           <div className="row d-flex flex-wrap justify-content-center">
+            {/* <ProductCard className="m-2" />
             <ProductCard className="m-2" />
             <ProductCard className="m-2" />
             <ProductCard className="m-2" />
-            <ProductCard className="m-2" />
-            <ProductCard className="m-2" />
+            <ProductCard className="m-2" /> */}
+            {this.renderProduct()}
           </div>
         </div>
         {/* ABOUT SECTION */}

@@ -6,7 +6,7 @@ type ButtonTypes = {
   children: any;
   style?: CSSProperties;
   className?: string;
-  onClick: any;
+  onClick?: any;
 };
 
 const ButtonUI = (props: ButtonTypes) => {

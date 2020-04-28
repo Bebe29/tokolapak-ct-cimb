@@ -4,14 +4,6 @@
       "username": "seto",
       "password": "password",
       "id": 1
-    },
-    {
-      "fullName": "pikachu pika",
-      "role": "user",
-      "username": "pikachu",
-      "password": "password",
-      "repeatPass": "password",
-      "id": 2
     }
   ]
 }

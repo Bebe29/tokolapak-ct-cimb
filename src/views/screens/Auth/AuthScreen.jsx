@@ -1,27 +1,40 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import TextField from "../../components/TextField/TextField";
 import ButtonUI from "../../components/Button/Button";
 import { loginHandler, registerHandler } from "../../../redux/actions";
 import { connect } from "react-redux";
+import "./AuthScreen.css";
 
 class AuthScreen extends React.Component {
   state = {
-    username: "",
-    password: "",
-    repeatPass: "",
-    fullName: "",
-    role: "",
-    isLogin: false
+    activePage: "register",
+    loginForm: {
+      username: "",
+      password: "",
+      showPassword: false
+    },
+    registerForm: {
+      username: "",
+      fullName: "",
+      email: "",
+      password: "",
+      showPassword: false
+    }
   };
 
-  inputHandler = (e, field) => {
-    this.setState({ [field]: e.target.value });
+  inputHandler = (e, field, form) => {
+    const { value } = e.target;
+    this.setState({
+      [form]: {
+        ...this.state[form],
+        [field]: value
+      }
+    });
   };
 
-  form = () => {
-    const { isLogin } = this.state;
-    if (isLogin) {
+  renderAuthComponent = () => {
+    const { activePage } = this.state;
+    if (activePage == "login") {
       return (
         <div>
           <h3>Log In</h3>
@@ -32,14 +45,16 @@ class AuthScreen extends React.Component {
           </p>
           <p className="mt-2">{this.props.user.errMsg}</p>
           <TextField
+            value={this.state.loginForm.username}
             placeholder="Username"
             className="mt-5"
-            onChange={e => this.inputHandler(e, "username")}
+            onChange={e => this.inputHandler(e, "username", "loginForm")}
           />
           <TextField
+            value={this.state.loginForm.password}
             placeholder="Password"
             className="mt-3"
-            onChange={e => this.inputHandler(e, "password")}
+            onChange={e => this.inputHandler(e, "password", "loginForm")}
           />
           <div className="d-flex justify-content-center">
             <ButtonUI type="contained" className="mt-5" onClick={this.login}>
@@ -57,29 +72,28 @@ class AuthScreen extends React.Component {
           </p>
           <p className="mt-2">{this.props.user.errMsg}</p>
           <TextField
+            value={this.state.registerForm.username}
             placeholder="Username"
             className="mt-5"
-            onChange={e => this.inputHandler(e, "username")}
+            onChange={e => this.inputHandler(e, "username", "registerForm")}
           />
           <TextField
-            placeholder="Full Name"
+            value={this.state.registerForm.fullName}
+            placeholder="Name"
             className="mt-3"
-            onChange={e => this.inputHandler(e, "fullName")}
+            onChange={e => this.inputHandler(e, "fullName", "registerForm")}
           />
           <TextField
-            placeholder="Role"
+            value={this.state.registerForm.email}
+            placeholder="Email"
             className="mt-3"
-            onChange={e => this.inputHandler(e, "role")}
+            onChange={e => this.inputHandler(e, "email", "registerForm")}
           />
           <TextField
+            value={this.state.registerForm.password}
             placeholder="Password"
             className="mt-3"
-            onChange={e => this.inputHandler(e, "password")}
-          />
-          <TextField
-            placeholder="Confirm Password"
-            className="mt-3"
-            onChange={e => this.inputHandler(e, "repeatPass")}
+            onChange={e => this.inputHandler(e, "password", "registerForm")}
           />
           <div className="d-flex justify-content-center">
             <ButtonUI type="contained" className="mt-5" onClick={this.register}>
@@ -91,14 +105,6 @@ class AuthScreen extends React.Component {
     }
   };
 
-  loginScreen = () => {
-    this.setState({ isLogin: true });
-  };
-
-  registerScreen = () => {
-    this.setState({ isLogin: false });
-  };
-
   login = () => {
     const { username, password } = this.state;
     const userData = {
@@ -106,24 +112,12 @@ class AuthScreen extends React.Component {
       password
     };
     this.props.onLogin(userData);
-    // this.setState({
-    //   username: "",
-    //   password: ""
-    // });
   };
 
   register = () => {
-    const { fullName, role, username, password, repeatPass } = this.state;
-    const userData = { fullName, role, username, password, repeatPass };
-
-    this.props.onRegister(userData);
-    // this.setState({
-    //   fullName: "",
-    //   role: "",
-    //   username: "",
-    //   password: "",
-    //   repeatPass: ""
-    // });
+    const { username, fullName, email, password } = this.state.registerForm;
+    const newUser = { username, fullName, email, password };
+    this.props.onRegister(newUser);
   };
 
   render() {
@@ -133,17 +127,25 @@ class AuthScreen extends React.Component {
         <div className="d-flex mt-5">
           <ButtonUI
             type="outlined"
-            className="mr-4"
-            onClick={this.registerScreen}
+            className={`auth-screen-btn ${
+              this.state.activePage == "register" ? "active" : null
+            } mr-4`}
+            onClick={() => this.setState({ activePage: "register" })}
           >
             Register
           </ButtonUI>
-          <ButtonUI type="outlined" onClick={this.loginScreen}>
+          <ButtonUI
+            type="outlined"
+            className={`auth-screen-btn ${
+              this.state.activePage == "login" ? "active" : null
+            }`}
+            onClick={() => this.setState({ activePage: "login" })}
+          >
             Login
           </ButtonUI>
         </div>
         <div className="row mt-5">
-          <div className="col-5">{this.form()}</div>
+          <div className="col-5">{this.renderAuthComponent()}</div>
           <div className="col-7">Picture</div>
         </div>
       </div>

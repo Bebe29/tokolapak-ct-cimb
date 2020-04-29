@@ -20,7 +20,7 @@ class ProductDetails extends React.Component {
   };
 
   addToCartHandler = () => {
-    Axios.post(`${API_URL}/cart`, {
+    Axios.post(`${API_URL}/carts`, {
       userId: this.props.user.id,
       productId: this.state.productData.id,
       quantity: 1

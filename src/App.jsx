@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Home from "./views/screens/Home/Home";
 import Navbar from "./views/components/Navbar/Navbar";
 import AuthScreen from "./views/screens/Auth/AuthScreen";
-import { userKeepLogin } from "./redux/actions";
+import { userKeepLogin, cookieChecker } from "./redux/actions";
 import ProductDetails from "./views/screens/ProductDetails/ProductDetails";
 import Cart from "./views/screens/Cart/Cart";
 
@@ -21,7 +21,10 @@ class App extends React.Component {
       let cookieResult = cookieObj.get("authData");
       if (cookieResult) {
         this.props.keepLogin(cookieResult);
+      } else {
+        this.props.cookieChecker();
       }
+      this.props.cookieChecker();
     }, 2000);
   }
 
@@ -56,7 +59,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  keepLogin: userKeepLogin
+  keepLogin: userKeepLogin,
+  cookieChecker
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

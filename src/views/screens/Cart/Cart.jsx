@@ -1,12 +1,13 @@
 import React from "react";
 import "./Cart.css";
 import { connect } from "react-redux";
+
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 
 class Cart extends React.Component {
   componentDidMount() {
-    Axios.get(`${API_URL}/cart`, {
+    Axios.get(`${API_URL}/carts`, {
       params: {
         userId: this.props.user.id,
         _expand: "product"
@@ -22,7 +23,7 @@ class Cart extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div>Cart</div>
       </div>
     );

@@ -93,7 +93,7 @@ export const registerHandler = userData => {
         if (res.data.length > 0) {
           dispatch({
             type: "ON_REGISTER_FAIL",
-            payload: "Username sudah digunakan",
+            payload: "Username sudah digunakan"
           });
         } else {
           Axios.post(`${API_URL}/users`, userData)
@@ -112,5 +112,11 @@ export const registerHandler = userData => {
       .catch(err => {
         console.log(err);
       });
+  };
+};
+
+export const cookieChecker = () => {
+  return {
+    type: "COOKIE_CHECK"
   };
 };

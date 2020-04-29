@@ -73,8 +73,9 @@ class AuthScreen extends React.Component {
 
   checkboxHandler = (e, form) => {
     const { checked } = e.target;
-    // const value = taget.name === 'showPasswordRegister' ? target.checked
-    // const value = taget.name;
+
+    console.log(checked);
+
     this.setState({
       [form]: {
         ...this.state[form],

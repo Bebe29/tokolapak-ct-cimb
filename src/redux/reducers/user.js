@@ -21,7 +21,6 @@ export default (state = init_state, action) => {
         fullName,
         role,
         id,
-        errMsg: "",
         cookieChecked: true
       };
     case ON_LOGIN_FAIL:

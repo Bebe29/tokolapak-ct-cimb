@@ -1,32 +1,37 @@
 import React from "react";
-import "./ProductDetails.css";
-import ProductCard from "../../components/Cards/ProductCard";
-import ButtonUI from "../../components/Button/Button";
-import Axios from "axios";
-import { API_URL } from "../../../constants/API";
 import { connect } from "react-redux";
 import swal from "sweetalert";
+
+import "./ProductDetails.css";
+import ButtonUI from "../../components/Button/Button";
+import TextField from "../../components/TextField/TextField";
+import Axios from "axios";
+import { API_URL } from "../../../constants/API";
 
 class ProductDetails extends React.Component {
   state = {
     productData: {
+      image: "",
       productName: "",
       price: 0,
-      category: "",
-      image: "",
       desc: "",
+      category: "",
       id: 0
     }
   };
 
   addToCartHandler = () => {
+    // POST method ke /cart
+    // Isinya: userId, productId, quantity
+    // console.log(this.props.user.id);
+    // console.log(this.state.productData.id);
     Axios.post(`${API_URL}/carts`, {
       userId: this.props.user.id,
       productId: this.state.productData.id,
       quantity: 1
     })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         swal("Add to cart", "Your item has been added to your cart", "success");
       })
       .catch(err => {
@@ -45,7 +50,14 @@ class ProductDetails extends React.Component {
   }
 
   render() {
-    const { productName, price, image, desc } = this.state.productData;
+    const {
+      productName,
+      image,
+      price,
+      desc,
+      category,
+      id
+    } = this.state.productData;
     return (
       <div className="container">
         <div className="row py-4">
@@ -65,6 +77,7 @@ class ProductDetails extends React.Component {
               }).format(price)}
             </h4>
             <p className="mt-4">{desc}</p>
+            {/* <TextField type="number" placeholder="Quantity" className="mt-3" /> */}
             <div className="d-flex flex-row mt-4">
               <ButtonUI onClick={this.addToCartHandler}>Add To Cart</ButtonUI>
               <ButtonUI className="ml-4" type="outlined">

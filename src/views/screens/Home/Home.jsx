@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Carousel, CarouselControl, CarouselItem } from "reactstrap";
+import Axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faShippingFast,
@@ -9,9 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./Home.css";
 
-import ProductCard from "../../components/Cards/ProductCard.tsx";
-import Axios from "axios";
-import { API_URL } from "../../../constants/API";
+import ProductCard from "../../components/Cards/ProductCard";
 
 import iPhoneX from "../../../assets/images/Showcase/iPhone-X.png";
 import iPhone8 from "../../../assets/images/Showcase/iPhone-8.png";
@@ -19,6 +18,7 @@ import iPadPro from "../../../assets/images/Showcase/iPad-Pro.png";
 import ButtonUI from "../../components/Button/Button";
 import CarouselShowcaseItem from "./CarouselShowcaseItem.tsx";
 import Colors from "../../../constants/Colors";
+import { API_URL } from "../../../constants/API";
 
 const dummy = [
   {
@@ -121,10 +121,10 @@ class Home extends React.Component {
       });
   };
 
-  renderProduct = () => {
+  renderProducts = () => {
     return this.state.bestSellerData.map(val => {
       return (
-        <ProductCard key={`bestseller-${val.id}`} className="m-2" data={val} />
+        <ProductCard key={`bestseller-${val.id}`} data={val} className="m-2" />
       );
     });
   };
@@ -172,12 +172,7 @@ class Home extends React.Component {
           {/* BEST SELLER SECTION */}
           <h2 className="text-center font-weight-bolder mt-5">BEST SELLER</h2>
           <div className="row d-flex flex-wrap justify-content-center">
-            {/* <ProductCard className="m-2" />
-            <ProductCard className="m-2" />
-            <ProductCard className="m-2" />
-            <ProductCard className="m-2" />
-            <ProductCard className="m-2" /> */}
-            {this.renderProduct()}
+            {this.renderProducts()}
           </div>
         </div>
         {/* ABOUT SECTION */}

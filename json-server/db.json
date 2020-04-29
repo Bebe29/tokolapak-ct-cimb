@@ -18,6 +18,13 @@
       "password": "password",
       "email": "pikachu",
       "id": 3
+    },
+    {
+      "username": "seto2",
+      "fullName": "seto haha",
+      "password": "password",
+      "email": "setoseto",
+      "id": 4
     }
   ],
   "products": [
@@ -44,6 +51,32 @@
       "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/b/mbp15touch-silver-select-cto-201807_3_1.jpeg",
       "desc": "HP Terbaikk loh",
       "id": 3
+    }
+  ],
+  "carts": [
+    {
+      "userId": 2,
+      "productId": 2,
+      "quantity": 1,
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "productId": 3,
+      "quantity": 1,
+      "id": 2
+    },
+    {
+      "userId": 2,
+      "productId": 1,
+      "quantity": 1,
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "productId": 1,
+      "quantity": 1,
+      "id": 5
     }
   ]
 }

@@ -9,6 +9,13 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 import "./Navbar.css";
 import ButtonUI from "../Button/Button.tsx";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import { logoutHandler } from "../../../redux/actions";
 
 const CircleBg = ({ children }) => {
   return <div className="circle-bg">{children}</div>;
@@ -17,7 +24,8 @@ const CircleBg = ({ children }) => {
 class Navbar extends React.Component {
   state = {
     searchBarIsFocused: false,
-    searcBarInput: ""
+    searcBarInput: "",
+    showDropdownMenu: false,
   };
 
   onFocus = () => {
@@ -26,6 +34,10 @@ class Navbar extends React.Component {
 
   onBlur = () => {
     this.setState({ searchBarIsFocused: false });
+  };
+
+  dropdownMenu = () => {
+    this.setState({ showDropdownMenu: !this.state.showDropdownMenu });
   };
 
   render() {
@@ -50,8 +62,44 @@ class Navbar extends React.Component {
         <div className="d-flex flex-row align-items-center">
           {this.props.user.id ? (
             <>
-              <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
-              <p className="small ml-3 mr-4">{this.props.user.username}</p>
+              <Dropdown
+                isOpen={this.state.showDropdownMenu}
+                toggle={this.dropdownMenu}
+              >
+                <DropdownToggle
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                    backgroundColor: "inherit",
+                    border: "inherit",
+                  }}
+                >
+                  <div className="d-flex">
+                    <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
+                    <p className="small ml-3 mr-4">
+                      {this.props.user.username}
+                    </p>
+                  </div>
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem>
+                    <Link
+                      to="/admin/dashboard"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      Dashboard
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem onClick={this.props.onLogout}>
+                    <Link
+                      to="/"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      Logout
+                    </Link>
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
               <Link
                 className="d-flex"
                 to="/cart"
@@ -97,10 +145,14 @@ class Navbar extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
   };
 };
 
-export default connect(mapStateToProps)(Navbar);
+const mapDispatchToProps = {
+  onLogout: logoutHandler,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

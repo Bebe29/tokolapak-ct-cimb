@@ -17,6 +17,11 @@ class ProductDetails extends React.Component {
       desc: "",
       category: "",
       id: 0
+    },
+    cartData: {
+      userId: "",
+      productId: "",
+      quantity: ""
     }
   };
 
@@ -25,14 +30,48 @@ class ProductDetails extends React.Component {
     // Isinya: userId, productId, quantity
     // console.log(this.props.user.id);
     // console.log(this.state.productData.id);
-    Axios.post(`${API_URL}/carts`, {
-      userId: this.props.user.id,
-      productId: this.state.productData.id,
-      quantity: 1
+    Axios.get(`${API_URL}/carts`, {
+      params: {
+        userId: this.props.user.id,
+        productId: this.state.productData.id
+      }
     })
       .then(res => {
-        // console.log(res);
-        swal("Add to cart", "Your item has been added to your cart", "success");
+        this.setState({ cartData: res.data[0] });
+        if (res.data.length > 0) {
+          const { userId, productId, quantity } = this.state.cartData;
+          Axios.put(`${API_URL}/carts/${this.state.cartData.id}`, {
+            userId,
+            productId,
+            quantity: quantity + 1
+          })
+            .then(res => {
+              swal(
+                "Add to cart",
+                "Your item has been added to your cart",
+                "success"
+              );
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          Axios.post(`${API_URL}/carts`, {
+            userId: this.props.user.id,
+            productId: this.state.productData.id,
+            quantity: 1
+          })
+            .then(res => {
+              swal(
+                "Add to cart",
+                "Your item has been added to your cart",
+                "success"
+              );
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       })
       .catch(err => {
         console.log(err);

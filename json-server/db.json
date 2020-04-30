@@ -76,7 +76,7 @@
     },
     {
       "productName": "iPhone X",
-      "price": "15000000",
+      "price": 13500000,
       "category": "Phone",
       "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
       "desc": "Hp X",
@@ -92,7 +92,7 @@
     },
     {
       "productName": "iPhone Xs",
-      "price": "20000000",
+      "price": 20000000,
       "category": "Phone",
       "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
       "desc": "Hp Xs",
@@ -101,22 +101,28 @@
   ],
   "carts": [
     {
-      "userId": 2,
-      "productId": 2,
-      "quantity": 1,
-      "id": 1
-    },
-    {
-      "userId": 2,
-      "productId": 2,
-      "quantity": 1,
-      "id": 2
-    },
-    {
       "userId": 1,
       "productId": 3,
       "quantity": 1,
       "id": 3
+    },
+    {
+      "userId": 4,
+      "productId": 2,
+      "quantity": 1,
+      "id": 5
+    },
+    {
+      "userId": 4,
+      "productId": 5,
+      "quantity": 2,
+      "id": 6
+    },
+    {
+      "userId": 4,
+      "productId": 1,
+      "quantity": 1,
+      "id": 7
     }
   ],
   "transactions": [

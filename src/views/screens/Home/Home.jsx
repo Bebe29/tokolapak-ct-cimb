@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faShippingFast,
   faMoneyBillWave,
-  faHeadset
+  faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Home.css";
 
@@ -30,28 +30,28 @@ const dummy = [
     begitu cerdas sehingga dapat merespons dengan sekali sentuh,
     atau bahkan sekali pandang. Dengan iPhone X, visi ini menjadi
     kenyataan. Selamat datang, masa depan.`,
-    id: 1
+    id: 1,
   },
   {
     productName: "iPhone 8",
     image: iPhone8,
     desc: `iPhone 8 memperkenalkan desain kaca yang sepenuhnya baru. Kamera paling populer di dunia, kini lebih baik lagi. Chip yang paling andal dan cerdas di ponsel pintar. Pengisian daya nirkabel yang begitu mudah dilakukan. Dan pengalaman augmented reality yang tak pernah mungkin sebelumnya. iPhone 8. iPhone generasi baru.`,
-    id: 2
+    id: 2,
   },
   {
     productName: "iPad Pro Gen 3",
     image: iPadPro,
     desc: `
     iPad Pro baru telah didesain ulang seutuhnya dan dilengkapi dengan teknologi Apple yang paling canggih. Ini akan membuat Anda berpikir ulang apa yang iPad mampu lakukan`,
-    id: 3
-  }
+    id: 3,
+  },
 ];
 
 class Home extends React.Component {
   state = {
     activeIndex: 0,
     animating: false,
-    bestSellerData: []
+    bestSellerData: [],
   };
 
   renderCarouselItems = () => {
@@ -76,7 +76,7 @@ class Home extends React.Component {
                       borderRadius: "16px",
                       fontWeight: "bolder",
                       position: "absolute",
-                      bottom: 420
+                      bottom: 420,
                     }}
                   >
                     BUY NOW
@@ -113,18 +113,21 @@ class Home extends React.Component {
 
   getBestSellerData = () => {
     Axios.get(`${API_URL}/products`)
-      .then(res => {
+      .then((res) => {
         this.setState({ bestSellerData: res.data });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
   renderProducts = () => {
-    return this.state.bestSellerData.map(val => {
+    return this.state.bestSellerData.map((val) => {
+      const { id } = val;
       return (
-        <ProductCard key={`bestseller-${val.id}`} data={val} className="m-2" />
+        <Link to={`/product/${id}`}>
+          <ProductCard key={`bestseller-${id}`} data={val} className="m-2" />
+        </Link>
       );
     });
   };

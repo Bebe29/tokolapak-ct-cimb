@@ -53,7 +53,7 @@ class Cart extends React.Component {
             <img
               src={val.product.image}
               alt=""
-              style={{ width: "80px", height: "180px", objectFit: "contain" }}
+              style={{ width: "100px", height: "100px", objectFit: "contain" }}
             />
           </td>
           <td>
@@ -63,13 +63,15 @@ class Cart extends React.Component {
             }).format(val.product.price)}
           </td>
           <td>{val.quantity}</td>
-          <td className="d-flex justify-content-center">
-            <ButtonUI
-              type="contained"
-              onClick={() => this.deleteHandler(val.id)}
-            >
-              Delete Item
-            </ButtonUI>
+          <td>
+            <div className="d-flex justify-content-center">
+              <ButtonUI
+                type="outlined"
+                onClick={() => this.deleteHandler(val.id)}
+              >
+                Delete Item
+              </ButtonUI>
+            </div>
           </td>
         </tr>
       );
@@ -79,9 +81,9 @@ class Cart extends React.Component {
   render() {
     return (
       <div className="container">
-        <h3 className="text-center mt-3">Cart</h3>
+        <h3 className="text-center mt-3 mb-3">Cart</h3>
         {this.state.cartData.length > 0 ? (
-          <Table className="table mt-3 container text-center">
+          <Table responsive className="table text-center">
             <thead>
               <tr>
                 <th>No</th>
@@ -95,8 +97,11 @@ class Cart extends React.Component {
             <tbody>{this.renderCartData()}</tbody>
           </Table>
         ) : (
-          <Alert>
-            Your cart is empty! <Link to="/">Go shopping</Link>
+          <Alert className="text-center">
+            Your cart is empty!{" "}
+            <Link to="/" style={{ textDecoration: "none" }}>
+              Go shopping
+            </Link>
           </Alert>
         )}
       </div>

@@ -86,7 +86,7 @@ class AuthScreen extends React.Component {
 
   renderAuthComponent = () => {
     const { activePage } = this.state;
-    if (activePage == "register") {
+    if (activePage === "register") {
       return (
         <div className="mt-5">
           <h3>Register</h3>
@@ -209,7 +209,7 @@ class AuthScreen extends React.Component {
             <div className="d-flex flex-row">
               <ButtonUI
                 className={`auth-screen-btn ${
-                  this.state.activePage == "register" ? "active" : null
+                  this.state.activePage === "register" ? "active" : null
                 }`}
                 type="outlined"
                 onClick={() => this.setState({ activePage: "register" })}
@@ -218,7 +218,7 @@ class AuthScreen extends React.Component {
               </ButtonUI>
               <ButtonUI
                 className={`ml-3 auth-screen-btn ${
-                  this.state.activePage == "login" ? "active" : null
+                  this.state.activePage === "login" ? "active" : null
                 }`}
                 type="outlined"
                 onClick={() => this.setState({ activePage: "login" })}

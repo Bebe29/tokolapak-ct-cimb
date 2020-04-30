@@ -2,7 +2,10 @@
   "users": [
     {
       "username": "seto",
+      "fullName": "seto haha",
       "password": "password",
+      "email": "seto",
+      "role": "user",
       "id": 1
     },
     {
@@ -10,6 +13,7 @@
       "fullName": "doraemon",
       "password": "password",
       "email": "doraemon",
+      "role": "user",
       "id": 2
     },
     {
@@ -17,13 +21,15 @@
       "fullName": "pikachu",
       "password": "password",
       "email": "pikachu",
+      "role": "user",
       "id": 3
     },
     {
-      "username": "seto2",
-      "fullName": "seto haha",
+      "username": "admin",
+      "fullName": "Super admin",
       "password": "password",
-      "email": "setoseto",
+      "email": "admin@gmail.com",
+      "role": "admin",
       "id": 4
     }
   ],
@@ -39,7 +45,7 @@
     {
       "productName": "iPad Pro 3",
       "price": 15000000,
-      "category": "Tablet",
+      "category": "Tab",
       "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/ipad-pro-11-select-cell-spacegray-201810.png",
       "desc": "HP Terbaikk loh",
       "id": 2
@@ -51,6 +57,46 @@
       "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/b/mbp15touch-silver-select-cto-201807_3_1.jpeg",
       "desc": "HP Terbaikk loh",
       "id": 3
+    },
+    {
+      "productName": "iPhone 11 Pro",
+      "price": 22000000,
+      "category": "Phone",
+      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone-11-pro-midnight-green.png",
+      "desc": "Hp kamera boba",
+      "id": 4
+    },
+    {
+      "productName": "iMac Pro",
+      "price": 40000000,
+      "category": "Desktop",
+      "image": "https://ibox.co.id/media/wysiwyg/iMacPro/imac-pro_02-min.png",
+      "desc": "Desktop para sultan",
+      "id": 5
+    },
+    {
+      "productName": "iPhone X",
+      "price": "15000000",
+      "category": "Phone",
+      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
+      "desc": "Hp X",
+      "id": 6
+    },
+    {
+      "productName": "MacBook Pro (16 Inci)",
+      "price": 37000000,
+      "category": "Laptop",
+      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/b/mbp-16-space-gray.png",
+      "desc": "Laptop terbaik",
+      "id": 7
+    },
+    {
+      "productName": "iPhone Xs",
+      "price": "20000000",
+      "category": "Phone",
+      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
+      "desc": "Hp Xs",
+      "id": 8
     }
   ],
   "carts": [
@@ -70,13 +116,16 @@
       "userId": 1,
       "productId": 3,
       "quantity": 1,
-      "id": 4
-    },
+      "id": 3
+    }
+  ],
+  "transactions": [
     {
-      "userId": 1,
-      "productId": 1,
-      "quantity": 1,
-      "id": 5
+      "userId": 2,
+      "totalPrice": 10000000,
+      "status": "pending",
+      "item": [],
+      "id": 1
     }
   ]
 }

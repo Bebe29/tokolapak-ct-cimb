@@ -1,17 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import "./Cart.css";
 
+import { Table, Alert } from "reactstrap";
+
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
+import ButtonUI from "../../components/Button/Button";
 
 class Cart extends React.Component {
   state = {
-    cartList: []
+    cartData: []
   };
 
   componentDidMount() {
-    // console.log(this.props.user.id);
+    this.getCartData();
+  }
+
+  getCartData = () => {
     Axios.get(`${API_URL}/carts`, {
       params: {
         userId: this.props.user.id,
@@ -19,22 +26,17 @@ class Cart extends React.Component {
       }
     })
       .then(res => {
-        // console.log(res.data);
-        this.setState({ cartList: res.data });
+        this.setState({ cartData: res.data });
       })
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
-  deleteHandler = (idx, cartID) => {
-    const { cartList } = this.state;
-    let temp = [...cartList];
-    temp.splice(idx, 1);
-    this.setState({ cartList: temp });
+  deleteHandler = cartID => {
     Axios.delete(`${API_URL}/carts/${cartID}`)
       .then(res => {
-        console.log(res.data);
+        this.getCartData();
       })
       .catch(err => {
         console.log(err);
@@ -42,13 +44,18 @@ class Cart extends React.Component {
   };
 
   renderCartData = () => {
-    const { cartList } = this.state;
-    return cartList.map((val, idx) => {
+    return this.state.cartData.map((val, idx) => {
       return (
         <tr>
-          {/* <td>{val.id}</td> */}
           <td>{idx + 1}</td>
           <td>{val.product.productName}</td>
+          <td>
+            <img
+              src={val.product.image}
+              alt=""
+              style={{ width: "80px", height: "180px", objectFit: "contain" }}
+            />
+          </td>
           <td>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
@@ -56,13 +63,13 @@ class Cart extends React.Component {
             }).format(val.product.price)}
           </td>
           <td>{val.quantity}</td>
-          <td>
-            <input
-              type="button"
-              value="Delete"
-              className="btn btn-danger"
-              onClick={() => this.deleteHandler(idx, val.id)}
-            />
+          <td className="d-flex justify-content-center">
+            <ButtonUI
+              type="contained"
+              onClick={() => this.deleteHandler(val.id)}
+            >
+              Delete Item
+            </ButtonUI>
           </td>
         </tr>
       );
@@ -73,18 +80,25 @@ class Cart extends React.Component {
     return (
       <div className="container">
         <h3 className="text-center mt-3">Cart</h3>
-        <table className="table mt-3 container text-center">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Product Name</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>{this.renderCartData()}</tbody>
-        </table>
+        {this.state.cartData.length > 0 ? (
+          <Table className="table mt-3 container text-center">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>{this.renderCartData()}</tbody>
+          </Table>
+        ) : (
+          <Alert>
+            Your cart is empty! <Link to="/">Go shopping</Link>
+          </Alert>
+        )}
       </div>
     );
   }

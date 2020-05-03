@@ -1,68 +1,24 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Final Project
 
-In the project directory, you can run:
+Rancangan untuk final project
 
-### `yarn start`
+### WebApp
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Membuat sebuah webapp untuk Petshop di mana pada web ini dapat dilakukan pembelian kebutuhan hewan (hanya untuk anjing dan kucing) dan melakukan booking untuk grooming hewan.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Fungsi App
 
-### `yarn test`
+Memudahkan konsumen untuk memenuhi kebutuhan hewan peliharaan kesayangannya dan mempermudah melakukan booking untuk grooming hewan sehingga konsumen tidak perlu menelepon Petshop untuk mengetahui slot grooming pada Petshop tersebut.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### User
 
-### `yarn build`
+1. User dapat melakukan pembelian produk-produk yang dibutuhkannya
+2. User dapat melakukan pembookingan grooming yang diinginkannya
+3. User dapat melakukan pembayaran
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Admin
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+1. Admin melakukan update produk baru atau update produk yang sekarang ada
+2. Admin melakukan update jadwal grooming

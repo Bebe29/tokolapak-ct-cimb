@@ -36,7 +36,7 @@
   "products": [
     {
       "productName": "iPhone 7 Plus",
-      "price": 5000000,
+      "price": 5600000,
       "category": "Phone",
       "image": "https://ibox.co.id/media/wysiwyg/PromoOnline/web-banner---iphone-7-plus-rev.png",
       "desc": "HP Terbaikk loh",
@@ -97,41 +97,85 @@
       "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
       "desc": "Hp Xs",
       "id": 8
+    },
+    {
+      "productName": "MacBook Air",
+      "price": 15000000,
+      "category": "Laptop",
+      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/a/macbook_air_pf-screen_1_3_1.png",
+      "desc": "MacBook Air hadir kembali loh",
+      "id": 9
+    },
+    {
+      "productName": "Samsung Z Flip",
+      "price": 24000000,
+      "category": "Phone",
+      "image": "https://images.samsung.com/id/smartphones/galaxy-z-flip/buy/3-bloom-black-gallery-mobile-img.jpg",
+      "desc": "Hp lipet",
+      "id": 10
+    },
+    {
+      "productName": "Samsung Note 10 Lite",
+      "price": 9000000,
+      "category": "Phone",
+      "image": "https://images.samsung.com/is/image/samsung/id-feature-galaxy-note10-lite-n770-206457823?$FB_TYPE_A_JPG$",
+      "desc": "Hp yg ada pennya",
+      "id": 11
     }
   ],
-  "carts": [
-    {
-      "userId": 1,
-      "productId": 3,
-      "quantity": 1,
-      "id": 3
-    },
-    {
-      "userId": 4,
-      "productId": 2,
-      "quantity": 1,
-      "id": 5
-    },
-    {
-      "userId": 4,
-      "productId": 5,
-      "quantity": 2,
-      "id": 6
-    },
-    {
-      "userId": 4,
-      "productId": 1,
-      "quantity": 1,
-      "id": 7
-    }
-  ],
+  "carts": [],
   "transactions": [
     {
-      "userId": 2,
-      "totalPrice": 10000000,
-      "status": "pending",
-      "item": [],
+      "userId": 1,
+      "totalPrice": 53500000,
+      "status": "Pending",
+      "item": [
+        {
+          "id": 3,
+          "quantity": 2,
+          "product": {
+            "productName": "Macbook Pro",
+            "price": 20000000,
+            "category": "Laptop",
+            "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/b/mbp15touch-silver-select-cto-201807_3_1.jpeg",
+            "desc": "HP Terbaikk loh",
+            "id": 3
+          }
+        },
+        {
+          "id": 8,
+          "quantity": 1,
+          "product": {
+            "productName": "iPhone X",
+            "price": 13500000,
+            "category": "Phone",
+            "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
+            "desc": "Hp X",
+            "id": 6
+          }
+        }
+      ],
       "id": 1
+    },
+    {
+      "userId": 1,
+      "totalPrice": 40000000,
+      "status": "Success",
+      "item": [
+        {
+          "id": 1,
+          "quantity": 1,
+          "product": {
+            "productName": "iMac Pro",
+            "price": 40000000,
+            "category": "Desktop",
+            "image": "https://ibox.co.id/media/wysiwyg/iMacPro/imac-pro_02-min.png",
+            "desc": "Desktop para sultan",
+            "id": 5
+          }
+        }
+      ],
+      "id": 2
     }
   ]
 }

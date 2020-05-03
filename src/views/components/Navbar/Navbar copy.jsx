@@ -14,8 +14,14 @@ import {
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 import "./Navbar.css";
-import ButtonUI from "../Button/Button";
-import { logoutHandler, searchProduct } from "../../../redux/actions";
+import ButtonUI from "../Button/Button.tsx";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import { logoutHandler } from "../../../redux/actions";
 
 const CircleBg = ({ children }) => {
   return <div className="circle-bg">{children}</div>;
@@ -24,8 +30,8 @@ const CircleBg = ({ children }) => {
 class Navbar extends React.Component {
   state = {
     searchBarIsFocused: false,
-    searchBarInput: "",
-    dropdownOpen: false,
+    searcBarInput: "",
+    showDropdownMenu: false,
   };
 
   onFocus = () => {
@@ -36,19 +42,8 @@ class Navbar extends React.Component {
     this.setState({ searchBarIsFocused: false });
   };
 
-  logoutBtnHandler = () => {
-    this.props.onLogout();
-    // this.forceUpdate();
-  };
-
-  inputHandler = (e, field) => {
-    const { value } = e.target;
-    this.setState({ [field]: value });
-    this.props.searchProduct(value);
-  };
-
-  toggleDropdown = () => {
-    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  dropdownMenu = () => {
+    this.setState({ showDropdownMenu: !this.state.showDropdownMenu });
   };
 
   render() {
@@ -64,10 +59,8 @@ class Navbar extends React.Component {
           className="px-5 d-flex flex-row justify-content-start"
         >
           <input
-            value={this.state.searchBarInput}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
-            onChange={(e) => this.inputHandler(e, "searchBarInput")}
             className={`search-bar ${
               this.state.searchBarIsFocused ? "active" : null
             }`}
@@ -79,32 +72,34 @@ class Navbar extends React.Component {
           {this.props.user.id ? (
             <>
               <Dropdown
-                toggle={this.toggleDropdown}
-                isOpen={this.state.dropdownOpen}
+                isOpen={this.state.showDropdownMenu}
+                toggle={this.dropdownMenu}
               >
-                <DropdownToggle tag="div" className="d-flex">
-                  <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
-                  <p className="small ml-3 mr-4">{this.props.user.username}</p>
+                <DropdownToggle
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                    backgroundColor: "inherit",
+                    border: "inherit",
+                  }}
+                >
+                  <div className="d-flex">
+                    <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
+                    <p className="small ml-3 mr-4">
+                      {this.props.user.username}
+                    </p>
+                  </div>
                 </DropdownToggle>
-                <DropdownMenu className="mt-2">
+                <DropdownMenu>
                   <DropdownItem>
                     <Link
-                      style={{ color: "inherit", textDecoration: "none" }}
                       to="/admin/dashboard"
+                      style={{ textDecoration: "none", color: "inherit" }}
                     >
                       Dashboard
                     </Link>
                   </DropdownItem>
-                  <DropdownItem>Members</DropdownItem>
-                  <DropdownItem>
-                    <Link
-                      to="/payment"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      Payments
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem onClick={this.logoutBtnHandler}>
+                  <DropdownItem onClick={this.props.onLogout}>
                     <Link
                       to="/"
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -115,20 +110,22 @@ class Navbar extends React.Component {
                 </DropdownMenu>
               </Dropdown>
               <Link
-                className="d-flex flex-row"
+                className="d-flex"
                 to="/cart"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <FontAwesomeIcon
-                  className="mr-2"
-                  icon={faShoppingCart}
-                  style={{ fontSize: 24 }}
-                />
-                <CircleBg>
-                  <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
-                    4
-                  </small>
-                </CircleBg>
+                <>
+                  <FontAwesomeIcon
+                    className="mr-2"
+                    icon={faShoppingCart}
+                    style={{ fontSize: 24 }}
+                  />
+                  <CircleBg>
+                    <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
+                      4
+                    </small>
+                  </CircleBg>
+                </>
               </Link>
             </>
           ) : (
@@ -165,7 +162,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   onLogout: logoutHandler,
-  searchProduct,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

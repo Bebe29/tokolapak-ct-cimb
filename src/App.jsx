@@ -9,10 +9,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import Home from "./views/screens/Home/Home";
 import Navbar from "./views/components/Navbar/Navbar";
 import AuthScreen from "./views/screens/Auth/AuthScreen";
-import { userKeepLogin, cookieChecker } from "./redux/actions";
 import ProductDetails from "./views/screens/ProductDetails/ProductDetails";
 import Cart from "./views/screens/Cart/Cart";
 import AdminDashboard from "./views/screens/Admin/AdminDashboard";
+import Payment from "./views/screens/Payment/Payment";
+import PageNotFound from "./views/screens/PageNotFound/PageNotFound";
+
+import { userKeepLogin, cookieChecker } from "./redux/actions";
 
 const cookieObj = new Cookie();
 
@@ -49,6 +52,8 @@ class App extends React.Component {
             />
             <Route exact path="/cart" component={Cart} />
             {this.renderAdminRoutes()}
+            <Route exact path="/payment" component={Payment} />
+            <Route path="*" component={PageNotFound} />
           </Switch>
           <div style={{ height: "120px" }} />
         </>
@@ -59,15 +64,25 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
   };
 };
 
 const mapDispatchToProps = {
   keepLogin: userKeepLogin,
-  cookieChecker
+  cookieChecker,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
+
+/**
+ * PR
+ * 1. Add to cart, jika barang double, qty yg akan bertambah
+ * 2. Di Home, ketika click PHONE/LAPTOP/TAB/DESKTOP
+ * 3. Di navbar, ketika ketik, secara otomatis filter products
+ * 4. Di cart, buat button checkout, serta dengan proses checkout
+ * 5. Ketika confirm checkout, lakukan POST request ke db.json ke transaction
+ *    -> lalu cart harus kosong
+ */

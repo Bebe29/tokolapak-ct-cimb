@@ -1,0 +1,23 @@
+.payment {
+  border-left: 1px solid #dbdde0;
+  border-right: 1px solid #dbdde0;
+  border-top: 1px solid #dbdde0;
+}
+
+.payment-table {
+  width: 100%;
+}
+
+.payment-table th,
+tr,
+td {
+  border-top: 1px solid #dbdde0;
+  border-bottom: 1px solid #dbdde0;
+  padding: 19px 0px 19px 24px;
+}
+
+.payment-table thead tr,
+th {
+  background-color: #f4f5f4;
+  border-top: 0px !important;
+}

@@ -19,6 +19,7 @@ import ButtonUI from "../../components/Button/Button";
 import CarouselShowcaseItem from "./CarouselShowcaseItem.tsx";
 import Colors from "../../../constants/Colors";
 import { API_URL } from "../../../constants/API";
+import { connect } from "react-redux";
 
 const dummy = [
   {
@@ -111,24 +112,45 @@ class Home extends React.Component {
     this.setState({ activeIndex: prevIndex });
   };
 
-  getBestSellerData = () => {
-    Axios.get(`${API_URL}/products`)
-      .then((res) => {
-        this.setState({ bestSellerData: res.data });
+  getBestSellerData = (product) => {
+    // this.props.filter();
+    if (!product && this.props.user.showAllProduct) {
+      Axios.get(`${API_URL}/products`)
+        .then((res) => {
+          this.setState({ bestSellerData: res.data });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Axios.get(`${API_URL}/products`, {
+        params: {
+          category: product,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          this.setState({ bestSellerData: res.data });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   renderProducts = () => {
     return this.state.bestSellerData.map((val) => {
-      const { id } = val;
-      return (
-        <Link to={`/product/${id}`}>
-          <ProductCard key={`bestseller-${id}`} data={val} className="m-2" />
-        </Link>
-      );
+      const { id, productName } = val;
+      if (
+        productName
+          .toLowerCase()
+          .startsWith(this.props.user.searchProduct.toLowerCase())
+      ) {
+        return (
+          <Link to={`/product/${id}`}>
+            <ProductCard key={`bestseller-${id}`} data={val} className="m-2" />
+          </Link>
+        );
+      }
     });
   };
 
@@ -141,16 +163,36 @@ class Home extends React.Component {
       <div>
         <div className="d-flex justify-content-center flex-row align-items-center my-3">
           <Link to="/" style={{ color: "inherit" }}>
-            <h6 className="mx-4 font-weight-bold">PHONE</h6>
+            <h6
+              className="mx-4 font-weight-bold"
+              onClick={() => this.getBestSellerData("Phone")}
+            >
+              PHONE
+            </h6>
           </Link>
           <Link to="/" style={{ color: "inherit" }}>
-            <h6 className="mx-4 font-weight-bold">LAPTOP</h6>
+            <h6
+              className="mx-4 font-weight-bold"
+              onClick={() => this.getBestSellerData("Laptop")}
+            >
+              LAPTOP
+            </h6>
           </Link>
           <Link to="/" style={{ color: "inherit" }}>
-            <h6 className="mx-4 font-weight-bold">TAB</h6>
+            <h6
+              className="mx-4 font-weight-bold"
+              onClick={() => this.getBestSellerData("Tab")}
+            >
+              TAB
+            </h6>
           </Link>
           <Link to="/" style={{ color: "inherit" }}>
-            <h6 className="mx-4 font-weight-bold">DESKTOP</h6>
+            <h6
+              className="mx-4 font-weight-bold"
+              onClick={() => this.getBestSellerData("Desktop")}
+            >
+              DESKTOP
+            </h6>
           </Link>
         </div>
         <Carousel
@@ -232,4 +274,10 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(Home);

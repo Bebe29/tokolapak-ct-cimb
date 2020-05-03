@@ -16,21 +16,22 @@ class AuthScreen extends React.Component {
     loginForm: {
       username: "",
       password: "",
-      showPassword: false
+      showPassword: false,
     },
     registerForm: {
       username: "",
       fullName: "",
       email: "",
       password: "",
-      showPassword: false
-    }
+      showPassword: false,
+    },
   };
 
   componentDidUpdate() {
     if (this.props.user.id) {
+      // alert("login");
       const cookie = new Cookies();
-      cookie.set("authData", JSON.stringify(this.props.user));
+      cookie.set("authData", JSON.stringify(this.props.user), { path: "/" });
     }
   }
 
@@ -39,9 +40,11 @@ class AuthScreen extends React.Component {
     this.setState({
       [form]: {
         ...this.state[form],
-        [field]: value
-      }
+        [field]: value,
+      },
     });
+
+    // console.log(e.target);
 
     // this.setState({ loginForm: {
     //   ...this.state.loginForm,
@@ -55,7 +58,7 @@ class AuthScreen extends React.Component {
       username,
       fullName,
       password,
-      email
+      email,
     };
 
     this.props.onRegister(newUser);
@@ -65,7 +68,7 @@ class AuthScreen extends React.Component {
     const { username, password } = this.state.loginForm;
     let newUser = {
       username,
-      password
+      password,
     };
 
     this.props.onLogin(newUser);
@@ -74,13 +77,13 @@ class AuthScreen extends React.Component {
   checkboxHandler = (e, form) => {
     const { checked } = e.target;
 
-    console.log(checked);
+    // console.log(checked);
 
     this.setState({
       [form]: {
         ...this.state[form],
-        showPassword: checked
-      }
+        showPassword: checked,
+      },
     });
   };
 
@@ -95,32 +98,32 @@ class AuthScreen extends React.Component {
           </p>
           <TextField
             value={this.state.registerForm.username}
-            onChange={e => this.inputHandler(e, "username", "registerForm")}
+            onChange={(e) => this.inputHandler(e, "username", "registerForm")}
             placeholder="Username"
             className="mt-5"
           />
           <TextField
             value={this.state.registerForm.fullName}
-            onChange={e => this.inputHandler(e, "fullName", "registerForm")}
+            onChange={(e) => this.inputHandler(e, "fullName", "registerForm")}
             placeholder="Name"
             className="mt-2"
           />
           <TextField
             value={this.state.registerForm.email}
-            onChange={e => this.inputHandler(e, "email", "registerForm")}
+            onChange={(e) => this.inputHandler(e, "email", "registerForm")}
             placeholder="Email"
             className="mt-2"
           />
           <TextField
             value={this.state.registerForm.password}
-            onChange={e => this.inputHandler(e, "password", "registerForm")}
+            onChange={(e) => this.inputHandler(e, "password", "registerForm")}
             placeholder="Password"
             className="mt-2"
             type={this.state.registerForm.showPassword ? "text" : "password"}
           />
           <input
             type="checkbox"
-            onChange={e => this.checkboxHandler(e, "registerForm")}
+            onChange={(e) => this.checkboxHandler(e, "registerForm")}
             className="mt-3"
             name="showPasswordRegister"
           />{" "}
@@ -146,20 +149,20 @@ class AuthScreen extends React.Component {
           </p>
           <TextField
             value={this.state.loginForm.username}
-            onChange={e => this.inputHandler(e, "username", "loginForm")}
+            onChange={(e) => this.inputHandler(e, "username", "loginForm")}
             placeholder="Username"
             className="mt-5"
           />
           <TextField
             value={this.state.loginForm.password}
-            onChange={e => this.inputHandler(e, "password", "loginForm")}
+            onChange={(e) => this.inputHandler(e, "password", "loginForm")}
             placeholder="Password"
             className="mt-2"
             type={this.state.loginForm.showPassword ? "text" : "password"}
           />
           <input
             type="checkbox"
-            onChange={e => this.checkboxHandler(e, "loginForm")}
+            onChange={(e) => this.checkboxHandler(e, "loginForm")}
             className="mt-3"
             name="showPasswordRegister"
           />{" "}
@@ -240,15 +243,15 @@ class AuthScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
   };
 };
 
 const mapDispatchToProps = {
   onRegister: registerHandler,
-  onLogin: loginHandler
+  onLogin: loginHandler,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);

@@ -153,10 +153,10 @@
     {
       "userId": 5,
       "totalPrice": 46000000,
-      "status": "On Progress",
+      "status": "Success",
       "orderDate": "5-5-2020",
       "paymentDate": "5-5-2020",
-      "finishDate": "-",
+      "finishDate": "5-5-2020",
       "shipping": 0,
       "id": 1
     },
@@ -183,10 +183,10 @@
     {
       "userId": 1,
       "totalPrice": 40000000,
-      "status": "On Progress",
+      "status": "Success",
       "orderDate": "5-5-2020",
       "paymentDate": "5-5-2020",
-      "finishDate": "-",
+      "finishDate": "5-5-2020",
       "shipping": 0,
       "id": 4
     },

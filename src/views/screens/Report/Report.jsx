@@ -12,7 +12,7 @@ class Report extends React.Component {
     userList: [],
     successData: [],
     productList: [],
-    price: {},
+    price: [],
     reportType: "User",
     sum: 0,
   };
@@ -109,22 +109,47 @@ class Report extends React.Component {
         }
       });
     } else if (this.state.reportType === "Product") {
+      return this.state.productList.map((val, idx) => {
+        const { product, quantity } = val;
+        // console.log(this.state.sum);
+
+        return (
+          <tr>
+            <td>{idx + 1}</td>
+            <td>{product.productName}</td>
+            <td>{}</td>
+            <td>{quantity}</td>
+          </tr>
+        );
+      });
+      // return (
+      //   <tr>
+      //     <td>No</td>
+      //     <td>Product Name</td>
+      //     <td>User Name</td>
+      //     <td>Quantity</td>
+      //   </tr>
+      // );
     }
   };
 
- totalPrice = (id) => {
-    Axios.get(`${API_URL}/transactions`, {
-      params: {
-        status: "Success",
-        userId: id
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  totalPrice = (id) => {
+    //  if (id === this.state.successData[0].userId) {
+    //    console.log(this.state.successData[0].totalPrice)
+    //  }
+    // Axios.get(`${API_URL}/transactions`, {
+    //   params: {
+    //     status: "Success",
+    //     userId: id
+    //   },
+    // })
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     this.setState({ successData: res.data });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   // count = () => {

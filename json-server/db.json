@@ -152,33 +152,71 @@
   "transactions": [
     {
       "userId": 5,
-      "totalPrice": 22020000,
-      "status": "Pending",
+      "totalPrice": 46000000,
+      "status": "On Progress",
       "orderDate": "5-5-2020",
-      "paymentDate": "-",
+      "paymentDate": "5-5-2020",
       "finishDate": "-",
-      "shipping": 20000,
+      "shipping": 0,
       "id": 1
     },
     {
       "userId": 5,
-      "totalPrice": 22000000,
+      "totalPrice": 5700000,
       "status": "Success",
       "orderDate": "5-5-2020",
       "paymentDate": "5-5-2020",
       "finishDate": "5-5-2020",
-      "shipping": 0,
+      "shipping": 100000,
       "id": 2
+    },
+    {
+      "userId": 5,
+      "totalPrice": 25650000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "shipping": 50000,
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "totalPrice": 40000000,
+      "status": "On Progress",
+      "orderDate": "5-5-2020",
+      "paymentDate": "5-5-2020",
+      "finishDate": "-",
+      "shipping": 0,
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "totalPrice": 39100000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "shipping": 100000,
+      "id": 5
     }
   ],
   "transactionDetails": [
+    {
+      "transactionId": 1,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 1
+    },
     {
       "transactionId": 1,
       "productId": 4,
       "price": 22000000,
       "quantity": 1,
       "total": 22000000,
-      "id": 1
+      "id": 2
     },
     {
       "transactionId": 2,
@@ -186,15 +224,47 @@
       "price": 5600000,
       "quantity": 1,
       "total": 5600000,
-      "id": 2
+      "id": 3
     },
     {
-      "transactionId": 2,
-      "productId": 4,
-      "price": 22000000,
+      "transactionId": 3,
+      "productId": 1,
+      "price": 5600000,
       "quantity": 1,
-      "total": 22000000,
+      "total": 5600000,
       "id": 4
+    },
+    {
+      "transactionId": 3,
+      "productId": 8,
+      "price": 20000000,
+      "quantity": 1,
+      "total": 20000000,
+      "id": 5
+    },
+    {
+      "transactionId": 4,
+      "productId": 5,
+      "price": 40000000,
+      "quantity": 1,
+      "total": 40000000,
+      "id": 6
+    },
+    {
+      "transactionId": 5,
+      "productId": 2,
+      "price": 15000000,
+      "quantity": 2,
+      "total": 30000000,
+      "id": 7
+    },
+    {
+      "transactionId": 5,
+      "productId": 11,
+      "price": 9000000,
+      "quantity": 1,
+      "total": 9000000,
+      "id": 8
     }
   ]
 }

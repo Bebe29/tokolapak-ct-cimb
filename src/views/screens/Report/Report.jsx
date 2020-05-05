@@ -9,47 +9,59 @@ import swal from "sweetalert";
 
 class Report extends React.Component {
   state = {
-    reportData: [],
-    detailData: [],
+    userList: [],
     successData: [],
+    productList: [],
+    price: {},
     reportType: "User",
     sum: 0,
   };
 
   componentDidMount() {
     this.getReportData();
+    // this.countTotalPrice()
   }
 
   getReportData = () => {
-    if (this.state.reportType === "User") {
-      Axios.get(`${API_URL}/users`, {
-        params: {
-          role: "User",
-          _embed: "transactions",
-        },
-      })
-        .then((res) => {
-          this.setState({ reportData: res.data });
+    Axios.get(`${API_URL}/users`, {
+      params: {
+        role: "User",
+        _embed: "transactions",
+      },
+    })
+      .then((res) => {
+        this.setState({ userList: res.data });
+        console.log(this.state.userList);
+        Axios.get(`${API_URL}/transactions`, {
+          params: {
+            status: "Success",
+            _expand: "User",
+            _embed: "transactionDetails",
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      //   Axios.get(`${API_URL}/transactions`, {
-      //     params: {
-      //       status: condition,
-      //       _expand: "user",
-      //       _embed: "transactionDetails",
-      //     },
-      //   })
-      //     .then((res) => {
-      //       // console.log(res.data);
-      //       this.setState({ paymentData: res.data });
-      //     })
-      //     .catch((err) => {
-      //       console.log(err);
-      //     });
-    }
+          .then((res) => {
+            this.setState({ successData: res.data });
+            console.log(this.state.successData);
+            Axios.get(`${API_URL}/transactionDetails`, {
+              params: {
+                _expand: "product",
+              },
+            })
+              .then((res) => {
+                this.setState({ productList: res.data });
+                console.log(this.state.productList);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   renderHeadData = () => {
@@ -61,7 +73,7 @@ class Report extends React.Component {
           <td>Total Shopping</td>
         </tr>
       );
-    } else if (this.state.reportType === "Admin") {
+    } else if (this.state.reportType === "Product") {
       return (
         <tr>
           <td>No</td>
@@ -75,61 +87,55 @@ class Report extends React.Component {
 
   renderReportData = () => {
     if (this.state.reportType === "User") {
-      return this.state.reportData.map((val, idx) => {
-        // console.log(val);
-        const { username, transactions, userId } = val;
+      return this.state.userList.map((val, idx) => {
+        const { username, transactions, id } = val;
         if (transactions.length > 0) {
-          Axios.get(`${API_URL}/transactions`, {
-            params: {
-              userId: userId,
-              status: "Success",
-            },
-          })
-            .then((res) => {
-              this.setState({ successData: res.data });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          // console.log(this.state.sum);
+          return (
+            <tr>
+              <td>{idx + 1}</td>
+              <td>{username}</td>
+              <td>{this.totalPrice(id)}</td>
+            </tr>
+          );
         } else {
           return (
             <tr>
               <td>{idx + 1}</td>
               <td>{username}</td>
-              <td>---</td>
+              <td>{0}</td>
             </tr>
           );
         }
       });
-    } else if (this.state.reportType === "Admin") {
+    } else if (this.state.reportType === "Product") {
     }
   };
 
-  renderSuccess = () => {
-    return this.state.successData.map((val) => {
-      console.log(val);
-    });
-    // data.map((val) => {
-    //   console.log(val);
-    //   const { status, totalPrice } = val;
-    //   if (status === "Success") {
-    //     return (
-    //       <>
-    //         <tr>
-    //           <td>{idx + 1}</td>
-    //           <td>{username}</td>
-    //           <td>{totalPrice}</td>
-    //         </tr>
-    //       </>
-    //     );
-    //   }
-    // });
+ totalPrice = (id) => {
+    Axios.get(`${API_URL}/transactions`, {
+      params: {
+        status: "Success",
+        userId: id
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  // count = () => {
+  //   this.state.price.map(val => {
+  //     console.log(val)
+  //   })
+  // }
 
   inputHandler = (e, field) => {
     const { value } = e.target;
     this.setState({ reportType: value });
-    this.getReportData(value);
   };
 
   render() {

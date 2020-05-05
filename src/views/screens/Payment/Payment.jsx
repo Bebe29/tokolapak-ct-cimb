@@ -6,22 +6,28 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 import swal from "sweetalert";
+import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
 class Payment extends React.Component {
   state = {
     paymentData: [],
-    activeProducts: [],
     detailData: [],
-    statusOrder: "",
+    productList: [],
+    statusOrder: "All",
+     modalOpen: false,
   };
 
   componentDidMount() {
     this.getPaymentData();
   }
 
+  toggleModal = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
+  };
+
   getPaymentData = (condition) => {
-    // console.log(this.state.statusOrder);
-    if (condition === "") {
+    // console.log(condition);
+    if (condition === "All") {
       Axios.get(`${API_URL}/transactions`, {
         params: {
           _expand: "user",
@@ -85,9 +91,31 @@ class Payment extends React.Component {
       });
   };
 
+  detailBtnHandler = (idx) => {
+    Axios.get(`${API_URL}/transactions`, {
+      params: {
+        id: this.state.paymentData[idx].id,
+        _embed: "transactionDetails",
+      },
+    })
+      .then((res) => {
+        // console.log(res.data[0].transactionDetails);
+        this.setState({
+          detailData: res.data[0],
+          productList: res.data[0].transactionDetails,
+          modalOpen: true,
+        });
+        // console.log(this.state.detailData)
+        // console.log(this.state.productList)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   renderPaymentData = () => {
     return this.state.paymentData.map((val, idx) => {
-      console.log(val);
+      // console.log(val);
       const {
         id,
         userId,
@@ -126,96 +154,61 @@ class Payment extends React.Component {
               )}
               <ButtonUI
                 type="outlined"
-                // onClick={() => this.verificationBtnHandler(id)}
+                onClick={() => this.detailBtnHandler(idx)}
               >
                 Detail
               </ButtonUI>
             </td>
           </tr>
-          {/* <tr>
-            <td className="" colSpan={3}>
-              <div className="d-flex justify-content-around align-items-center">
-                <div className="d-flex flex-column ml-4 justify-content-center">
-                  <h6>
-                    Order Date:
-                    <span style={{ fontWeight: "normal" }}> {orderDate}</span>
-                  </h6>
-                  <h6>
-                    Payment Date:
-                    <span style={{ fontWeight: "normal" }}> {paymentDate}</span>
-                  </h6>
-                  <h6>
-                    Finish Date:
-                    <span style={{ fontWeight: "normal" }}> {finishDate}</span>
-                  </h6>
-                  <h6>Product:</h6>
-                  <div className="mr-5">
-                      <img
-                      src={image}
-                      alt=""
-                      style={{
-                          width: "150px",
-                          height: "150px",
-                          objectFit: "contain",
-                        }}
-                        />
-                        </div>
-                    <div className="mr-5">
-                      <h5>{productName}</h5>
-                      <h6 className="mt-2">
-                      Category:
-                        <span style={{ fontWeight: "normal" }}>
-                          {" "}
-                          {category}
-                        </span>
-                        </h6>
-                      <h6>
-                        Price:
-                        <span style={{ fontWeight: "normal" }}>
-                        {" "}
-                          {new Intl.NumberFormat("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                          }).format(price)}
-                          </span>
-                          </h6>
-                        </div>
-                  <>{this.renderProduct(transactionDetails)}</>
-                </div>
-              </div>
-            </td>
-          </tr> */}
         </>
       );
     });
   };
 
-  getProductDetail = () => {
-    Axios.get(`${API_URL}/transactionDetails`, {
-      params: {
-        _expand: "product",
-      },
-    })
-      .then((res) => {
-        this.setState({ detailData: res.data });
-        console.log(this.state.detailData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  renderModalProduct = () => {
+    return this.state.productList.map((val) => {
+      // console.log(val);
+      const { productId, quantity, total, price } = val;
+      return (
+        <tr>
+          <td>{productId}</td>
+          <td>
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }).format(price)}
+          </td>
+          <td>{quantity}</td>
+          <td>
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }).format(total)}
+          </td>
+        </tr>
+      );
+    });
   };
 
   inputHandler = (e, field) => {
     const { value } = e.target;
-    this.getPaymentData(value);
+    this.setState({ statusOrder: value });
+    this.getPaymentData(value)
   };
 
   renderProduct = (data) => {
-    // this.getProductDetail();
   };
 
   render() {
+    const {
+      orderDate,
+      paymentDate,
+      finishDate,
+      shipping,
+      transactionDetails,
+    } = this.state.detailData;
     return (
+      <>
       <div className="container py-4">
         <div className="payment">
           <caption className="p-3">
@@ -227,7 +220,7 @@ class Payment extends React.Component {
               className="custom-text-input h-100 pl-3"
               onChange={(e) => this.inputHandler(e, "statusOrder")}
             >
-              <option value="">All</option>
+              <option value="All">All</option>
               <option value="Pending">Pending</option>
               <option value="On Progress">On Progress</option>
               <option value="Success">Success</option>
@@ -248,6 +241,48 @@ class Payment extends React.Component {
           </table>
         </div>
       </div>
+      <Modal
+          toggle={this.toggleModal}
+          isOpen={this.state.modalOpen}
+          className="edit-modal"
+        >
+          <ModalHeader toggle={this.toggleModal}>
+            <caption>
+              <h3>Detail Transaction</h3>
+            </caption>
+          </ModalHeader>
+          <ModalBody>
+            <div>Order Date: {orderDate}</div>
+            <div>Payment Date: {paymentDate}</div>
+            <div>Finish Date: {finishDate}</div>
+            <div>Shipping cost: {shipping}</div>
+            <div>Product:</div>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product ID</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>{this.renderModalProduct()}</tbody>
+              </table>
+            </div>
+            <div></div>
+            <div>
+              <ButtonUI
+                className="w-100"
+                onClick={this.toggleModal}
+                type="outlined"
+              >
+                Close
+              </ButtonUI>
+            </div>
+          </ModalBody>
+        </Modal>
+        </>
     );
   }
 }

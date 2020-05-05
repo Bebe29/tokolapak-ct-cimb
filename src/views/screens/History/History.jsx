@@ -136,10 +136,11 @@ class History extends React.Component {
       .then((res) => {
         // console.log(res.data[0].transactionDetails);
         this.setState({
-          detailData: res.data,
+          detailData: res.data[0],
           productList: res.data[0].transactionDetails,
           modalOpen: true,
         });
+        // console.log(this.state.productList)
       })
       .catch((err) => {
         console.log(err);
@@ -148,11 +149,11 @@ class History extends React.Component {
 
   renderModalProduct = () => {
     return this.state.productList.map((val) => {
-      console.log(val);
-      const { productID, quantity, total, price } = val;
+      // console.log(val);
+      const { productId, quantity, total, price } = val;
       return (
         <tr>
-          <td>{productID}</td>
+          <td>{productId}</td>
           <td>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",

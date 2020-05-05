@@ -3,7 +3,7 @@ import "./Cart.css";
 
 import { connect } from "react-redux";
 import { Alert, Modal, ModalHeader, ModalBody } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
@@ -11,14 +11,15 @@ import { API_URL } from "../../../constants/API";
 import ButtonUI from "../../components/Button/Button";
 import swal from "sweetalert";
 
+import { inCart } from "../../../redux/actions";
+
 class Cart extends React.Component {
   state = {
     cartData: [],
     paymentData: [],
-    itemPurchased: [],
-    idTransaction: 0,
     total: 0,
     modalOpen: false,
+    // checkoutItems: [],
   };
 
   getCartData = () => {
@@ -41,7 +42,30 @@ class Cart extends React.Component {
     this.setState({
       paymentData: this.state.cartData,
     });
+    console.log(this.state.paymentData);
   };
+
+  // checkoutHandler = (e, idx) => {
+  //   const { checked } = e.target;
+
+  //   if (checked) {
+  //     this.setState({ checkoutItems: [...this.state.checkoutItems, idx] });
+  //   } else {
+  //     this.setState({
+  //       checkoutItems: [
+  //         ...this.state.checkoutItems.filter((val) => val !== idx),
+  //       ],
+  //     });
+  //   }
+  // };
+
+  // checkboxHandler = (e, index) => {
+  //   const { checked } = e.target;
+
+  //   this.setState({
+  //     checkoutItems: [...this.state.checkoutItems, index],
+  //   });
+  // };
 
   renderCartData = (condition, data) => {
     return data.map((val, idx) => {
@@ -70,10 +94,16 @@ class Cart extends React.Component {
             <td>
               <ButtonUI
                 type="outlined"
-                onClick={() => this.deleteCartHandler(id)}
+                onClick={() => this.deleteCartHandler(id, idx)}
               >
                 Delete Item
               </ButtonUI>
+              {/* <input
+                type="checkbox"
+                onChange={(e) => this.checkboxHandler(e, idx)}
+                // className="mt-3"
+                // name="showPasswordRegister"
+              /> */}
             </td>
           </tr>
         );
@@ -118,47 +148,69 @@ class Cart extends React.Component {
       const { quantity, product, id } = val;
       const { price } = product;
       const sum = quantity * price;
-      const item = { id, quantity, product };
+      // const item = { id, quantity, product };
       this.setState({
         total: this.state.total + sum,
-        itemPurchased: [...this.state.itemPurchased, item],
+        // itemPurchased: [...this.state.itemPurchased, item],
       });
+      // console.log(this.state.total);
+      // console.log(this.state.itemPurchased);
     });
   };
 
-  deleteCartHandler = (id) => {
+  deleteCartHandler = (id, idx) => {
     Axios.delete(`${API_URL}/carts/${id}`)
       .then((res) => {
         this.getCartData();
         this.setState({
-          totalPrice: 0,
-          itemPurchased: [],
+          total: 0,
+          // itemPurchased: [],
         });
       })
       .catch((err) => {
         console.log(err);
       });
+    // const { id, qtyInCart } = this.props.user;
+    // this.props.inCart(id, qtyInCart - this.state.cartData[idx].quantity);
   };
 
-  clearCartHandler = (data) => {
-    data.map((val) => {
+  clearCartHandler = () => {
+    this.state.paymentData.map((val) => {
       const { id } = val;
       this.deleteCartHandler(id);
     });
   };
 
   checkoutBtnHandler = () => {
+    const now = new Date();
+    const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
     Axios.post(`${API_URL}/transactions`, {
       userId: this.props.user.id,
       totalPrice: this.state.total,
       status: "Pending",
-      item: this.state.itemPurchased,
+      orderDate: date,
+      paymentDate: "-",
+      finishDate: "-",
     })
       .then((res) => {
-        this.getPaymentData();
-        this.setState({ idTransaction: res.data.id });
         this.toggleModal();
-        this.clearCartHandler(res.data.item);
+        this.state.cartData.map((val) => {
+          const { productId, product, quantity } = val;
+          const { price } = product;
+          Axios.post(`${API_URL}/transactionDetails`, {
+            transactionId: res.data.id,
+            productId: productId,
+            price: price,
+            quantity: quantity,
+            total: price * quantity,
+          })
+            .then((res) => {})
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+        this.getPaymentData();
+        this.clearCartHandler();
       })
       .catch((err) => {
         console.log(err);
@@ -166,6 +218,8 @@ class Cart extends React.Component {
   };
 
   payBtnHandler = () => {
+    const now = new Date();
+    const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
     Axios.get(`${API_URL}/transactions`, {
       params: {
         id: this.state.idTransaction,
@@ -173,13 +227,13 @@ class Cart extends React.Component {
     })
       .then((res) => {
         Axios.patch(`${API_URL}/transactions/${this.state.idTransaction}`, {
-          status: "Success",
+          status: "Waiting Verification",
+          paymentDate: date,
         })
           .then((res) => {
-            swal("Success!", "Your payment success", "success", {
-              button: { value: true },
-            }).then(() => {
-              this.toggleModal();
+            this.toggleModal();
+            swal("Success!", "Your payment success", "success").then(() => {
+              // <Redirect to={"/history"} />;
             });
           })
           .catch((err) => {
@@ -311,10 +365,10 @@ class Cart extends React.Component {
                   type="outlined"
                 >
                   <Link
-                    to="/payment"
+                    to="/"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    Cancel
+                    Pay Later
                   </Link>
                 </ButtonUI>
               </div>
@@ -328,7 +382,7 @@ class Cart extends React.Component {
                     to="/payment"
                     style={{ textDecoration: "none", color: "inherit" }}
                   > */}
-                  Pay
+                  Pay Now
                   {/* </Link> */}
                 </ButtonUI>
               </div>
@@ -345,4 +399,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = {
+  inCart,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

@@ -6,6 +6,7 @@
       "password": "password",
       "email": "seto",
       "role": "user",
+      "qtyInCart": 2,
       "id": 1
     },
     {
@@ -14,6 +15,7 @@
       "password": "password",
       "email": "doraemon",
       "role": "user",
+      "qtyInCart": 0,
       "id": 2
     },
     {
@@ -22,6 +24,7 @@
       "password": "password",
       "email": "pikachu",
       "role": "user",
+      "qtyInCart": 0,
       "id": 3
     },
     {
@@ -30,6 +33,7 @@
       "password": "password",
       "email": "admin@gmail.com",
       "role": "admin",
+      "qtyInCart": 0,
       "id": 4
     }
   ],
@@ -51,14 +55,6 @@
       "id": 2
     },
     {
-      "productName": "Macbook Pro",
-      "price": 20000000,
-      "category": "Laptop",
-      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/b/mbp15touch-silver-select-cto-201807_3_1.jpeg",
-      "desc": "HP Terbaikk loh",
-      "id": 3
-    },
-    {
       "productName": "iPhone 11 Pro",
       "price": 22000000,
       "category": "Phone",
@@ -73,14 +69,6 @@
       "image": "https://ibox.co.id/media/wysiwyg/iMacPro/imac-pro_02-min.png",
       "desc": "Desktop para sultan",
       "id": 5
-    },
-    {
-      "productName": "iPhone X",
-      "price": 13500000,
-      "category": "Phone",
-      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
-      "desc": "Hp X",
-      "id": 6
     },
     {
       "productName": "MacBook Pro (16 Inci)",
@@ -123,59 +111,610 @@
       "id": 11
     }
   ],
-  "carts": [],
+  "wishlists": [
+    {
+      "userId": 1,
+      "id": 1
+    }
+  ],
+  "wishlistDetails": [
+    {
+      "wishlistId": 1,
+      "productId": 10,
+      "id": 1
+    },
+    {
+      "wishlistId": 1,
+      "productId": 5,
+      "id": 5
+    }
+  ],
+  "carts": [
+    {
+      "userId": 1,
+      "productId": 5,
+      "quantity": 1,
+      "id": 1
+    }
+  ],
   "transactions": [
     {
       "userId": 1,
-      "totalPrice": 53500000,
-      "status": "Pending",
-      "item": [
-        {
-          "id": 3,
-          "quantity": 2,
-          "product": {
-            "productName": "Macbook Pro",
-            "price": 20000000,
-            "category": "Laptop",
-            "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/b/mbp15touch-silver-select-cto-201807_3_1.jpeg",
-            "desc": "HP Terbaikk loh",
-            "id": 3
-          }
-        },
-        {
-          "id": 8,
-          "quantity": 1,
-          "product": {
-            "productName": "iPhone X",
-            "price": 13500000,
-            "category": "Phone",
-            "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
-            "desc": "Hp X",
-            "id": 6
-          }
-        }
-      ],
+      "totalPrice": 44000000,
+      "status": "Success",
+      "orderDate": "2-5-2020",
+      "paymentDate": "4-5-2020",
+      "finishDate": "4-5-2020",
       "id": 1
     },
     {
       "userId": 1,
-      "totalPrice": 40000000,
+      "totalPrice": 88000000,
       "status": "Success",
-      "item": [
-        {
-          "id": 1,
-          "quantity": 1,
-          "product": {
-            "productName": "iMac Pro",
-            "price": 40000000,
-            "category": "Desktop",
-            "image": "https://ibox.co.id/media/wysiwyg/iMacPro/imac-pro_02-min.png",
-            "desc": "Desktop para sultan",
-            "id": 5
-          }
-        }
-      ],
+      "orderDate": "1-5-2020",
+      "paymentDate": "2-5-2020",
+      "finishDate": "4-5-2020",
       "id": 2
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 6
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 7
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 8
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 9
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 10
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 13
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 14
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 15
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 16
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 17
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 18
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 19
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 20
+    },
+    {
+      "userId": 1,
+      "totalPrice": 61000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 21
+    },
+    {
+      "userId": 1,
+      "totalPrice": 64000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 22
+    },
+    {
+      "userId": 1,
+      "totalPrice": 15000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 23
+    },
+    {
+      "userId": 1,
+      "totalPrice": 24000000,
+      "status": "Pending",
+      "orderDate": "5-5-2020",
+      "paymentDate": "-",
+      "finishDate": "-",
+      "id": 24
+    }
+  ],
+  "transactionDetails": [
+    {
+      "transactionId": 1,
+      "productId": 4,
+      "price": 22000000,
+      "quantity": 2,
+      "total": 44000000,
+      "id": 1
+    },
+    {
+      "transactionId": 2,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 2,
+      "total": 48000000,
+      "id": 2
+    },
+    {
+      "transactionId": 2,
+      "productId": 4,
+      "price": 40000000,
+      "quantity": 1,
+      "total": 40000000,
+      "id": 3
+    },
+    {
+      "transactionId": 3,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 4
+    },
+    {
+      "transactionId": 3,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 5
+    },
+    {
+      "transactionId": 4,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 6
+    },
+    {
+      "transactionId": 4,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 7
+    },
+    {
+      "transactionId": 5,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 8
+    },
+    {
+      "transactionId": 5,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 9
+    },
+    {
+      "transactionId": 6,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 10
+    },
+    {
+      "transactionId": 6,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 11
+    },
+    {
+      "transactionId": 7,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 12
+    },
+    {
+      "transactionId": 7,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 13
+    },
+    {
+      "transactionId": 8,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 14
+    },
+    {
+      "transactionId": 8,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 15
+    },
+    {
+      "transactionId": 9,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 16
+    },
+    {
+      "transactionId": 9,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 17
+    },
+    {
+      "transactionId": 10,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 18
+    },
+    {
+      "transactionId": 10,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 19
+    },
+    {
+      "transactionId": 11,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 20
+    },
+    {
+      "transactionId": 11,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 21
+    },
+    {
+      "transactionId": 12,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 22
+    },
+    {
+      "transactionId": 12,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 23
+    },
+    {
+      "transactionId": 13,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 24
+    },
+    {
+      "transactionId": 13,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 25
+    },
+    {
+      "transactionId": 14,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 26
+    },
+    {
+      "transactionId": 14,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 27
+    },
+    {
+      "transactionId": 15,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 28
+    },
+    {
+      "transactionId": 15,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 29
+    },
+    {
+      "transactionId": 16,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 30
+    },
+    {
+      "transactionId": 16,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 31
+    },
+    {
+      "transactionId": 17,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 32
+    },
+    {
+      "transactionId": 17,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 33
+    },
+    {
+      "transactionId": 18,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 34
+    },
+    {
+      "transactionId": 18,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 35
+    },
+    {
+      "transactionId": 19,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 36
+    },
+    {
+      "transactionId": 19,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 37
+    },
+    {
+      "transactionId": 20,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 38
+    },
+    {
+      "transactionId": 20,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 39
+    },
+    {
+      "transactionId": 21,
+      "productId": 7,
+      "price": 37000000,
+      "quantity": 1,
+      "total": 37000000,
+      "id": 40
+    },
+    {
+      "transactionId": 21,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 41
+    },
+    {
+      "transactionId": 22,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 42
+    },
+    {
+      "transactionId": 22,
+      "productId": 5,
+      "price": 40000000,
+      "quantity": 1,
+      "total": 40000000,
+      "id": 43
+    },
+    {
+      "transactionId": 23,
+      "productId": 2,
+      "price": 15000000,
+      "quantity": 1,
+      "total": 15000000,
+      "id": 44
+    },
+    {
+      "transactionId": 24,
+      "productId": 10,
+      "price": 24000000,
+      "quantity": 1,
+      "total": 24000000,
+      "id": 45
     }
   ]
 }

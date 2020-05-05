@@ -8,6 +8,9 @@ import TextField from "../../components/TextField/TextField";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 
+import { inCart } from "../../../redux/actions";
+// import Cookies from "universal-cookie";
+
 class ProductDetails extends React.Component {
   state = {
     productData: {
@@ -23,7 +26,16 @@ class ProductDetails extends React.Component {
       productId: "",
       quantity: "",
     },
+    wishlistId: 0,
   };
+
+  // componentDidUpdate() {
+  //   if (this.props.user.id) {
+  //     alert("add");
+  //     const cookie = new Cookies();
+  //     cookie.set("cartData", JSON.stringify(this.props.user), { path: "/" });
+  //   }
+  // }
 
   addToCartHandler = () => {
     // POST method ke /cart
@@ -37,15 +49,15 @@ class ProductDetails extends React.Component {
       },
     })
       .then((res) => {
+        const { id, qtyInCart } = this.props.user;
         this.setState({ cartData: res.data[0] });
         if (res.data.length > 0) {
-          const { userId, productId, quantity } = this.state.cartData;
-          Axios.put(`${API_URL}/carts/${this.state.cartData.id}`, {
-            userId,
-            productId,
+          const { quantity } = this.state.cartData;
+          Axios.patch(`${API_URL}/carts/${this.state.cartData.id}`, {
             quantity: quantity + 1,
           })
             .then((res) => {
+              this.props.inCart(id, qtyInCart + 1);
               swal(
                 "Add to cart",
                 "Your item has been added to your cart",
@@ -62,6 +74,7 @@ class ProductDetails extends React.Component {
             quantity: 1,
           })
             .then((res) => {
+              this.props.inCart(id, qtyInCart + 1);
               swal(
                 "Add to cart",
                 "Your item has been added to your cart",
@@ -72,6 +85,35 @@ class ProductDetails extends React.Component {
               console.log(err);
             });
         }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  addToWishlist = () => {
+    Axios.get(`${API_URL}/wishlists`, {
+      params: {
+        userId: this.props.user.id,
+      },
+    })
+      .then((res) => {
+        this.setState({ wishlistId: res.data[0].id });
+        Axios.post(`${API_URL}/wishlistDetails`, {
+          wishlistId: this.state.wishlistId,
+          productId: this.state.productData.id,
+        })
+          .then((res) => {
+            // console.log(res.data);
+            swal(
+              "Add to wishlist",
+              "Your item has been added to your wishlist",
+              "success"
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -119,7 +161,11 @@ class ProductDetails extends React.Component {
             {/* <TextField type="number" placeholder="Quantity" className="mt-3" /> */}
             <div className="d-flex flex-row mt-4">
               <ButtonUI onClick={this.addToCartHandler}>Add To Cart</ButtonUI>
-              <ButtonUI className="ml-4" type="outlined">
+              <ButtonUI
+                className="ml-4"
+                type="outlined"
+                onClick={this.addToWishlist}
+              >
                 Add To Wishlist
               </ButtonUI>
             </div>
@@ -136,4 +182,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ProductDetails);
+const mapDispatchToProps = {
+  inCart,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

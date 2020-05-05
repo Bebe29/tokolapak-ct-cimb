@@ -13,6 +13,8 @@ import ProductDetails from "./views/screens/ProductDetails/ProductDetails";
 import Cart from "./views/screens/Cart/Cart";
 import AdminDashboard from "./views/screens/Admin/AdminDashboard";
 import Payment from "./views/screens/Payment/Payment";
+import Wishlist from "./views/screens/Wishlist/Wishlist";
+import History from "./views/screens/History/History";
 import PageNotFound from "./views/screens/PageNotFound/PageNotFound";
 
 import { userKeepLogin, cookieChecker } from "./redux/actions";
@@ -22,7 +24,7 @@ const cookieObj = new Cookie();
 class App extends React.Component {
   componentDidMount() {
     setTimeout(() => {
-      let cookieResult = cookieObj.get("authData");
+      let cookieResult = cookieObj.get("authData", { path: "/" });
       if (cookieResult) {
         this.props.keepLogin(cookieResult);
       } else {
@@ -53,6 +55,8 @@ class App extends React.Component {
             <Route exact path="/cart" component={Cart} />
             {this.renderAdminRoutes()}
             <Route exact path="/payment" component={Payment} />
+            <Route exact path="/wishlist" component={Wishlist} />
+            <Route exact path="/history" component={History} />
             <Route path="*" component={PageNotFound} />
           </Switch>
           <div style={{ height: "120px" }} />

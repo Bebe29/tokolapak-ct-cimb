@@ -113,3 +113,27 @@ export const searchProduct = (value) => {
     payload: value,
   };
 };
+
+export const inCart = (id, qty) => {
+  return (dispatch) => {
+    Axios.patch(`${API_URL}/users/${id}`, {
+      qtyInCart: qty,
+    })
+      .then((res) => {
+        dispatch({
+          type: "IN_CART",
+          payload: qty,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "IN_CART",
+          payload: qty,
+        });
+      });
+  };
+  // return {
+  //   type: "IN_CART",
+  //   payload: qty,
+  // };
+};

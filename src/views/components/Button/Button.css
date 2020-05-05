@@ -67,3 +67,19 @@
 .custom-btn-textual:active {
   color: var(--accent-dark);
 }
+
+.custom-btn-disabled {
+  border: 1px solid lightgray !important;
+  background-color: lightgray !important;
+  color: white !important;
+}
+
+.custom-btn-disabled:hover {
+  border: 1px solid lightgray;
+  color: white;
+}
+
+.custom-btn-disabled:active {
+  border: 1px solid lightgray;
+  color: white;
+}

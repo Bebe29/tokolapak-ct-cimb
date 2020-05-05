@@ -1,26 +1,30 @@
 import React from "react";
 import { connect } from "react-redux";
-import "./Payment.css";
+import "./History.css";
 import ButtonUI from "../../components/Button/Button";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 import swal from "sweetalert";
 
-class Payment extends React.Component {
+class History extends React.Component {
   state = {
-    paymentData: [],
+    historyData: [],
   };
 
   componentDidMount() {
-    this.getPaymentData();
+    this.getHistoryData();
   }
 
-  getPaymentData = () => {
-    Axios.get(`${API_URL}/transactions`)
+  getHistoryData = () => {
+    Axios.get(`${API_URL}/transactions`, {
+      params: {
+        userId: this.props.user.id,
+      },
+    })
       .then((res) => {
         // console.log(res.data);
-        this.setState({ paymentData: res.data });
+        this.setState({ historyData: res.data });
         // console.log(this.state.itemsData);
       })
       .catch((err) => {
@@ -28,7 +32,7 @@ class Payment extends React.Component {
       });
   };
 
-  verificationBtnHandler = (idIndex) => {
+  payBtnHandler = (idIndex) => {
     const now = new Date();
     const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
     Axios.get(`${API_URL}/transactions`, {
@@ -37,19 +41,26 @@ class Payment extends React.Component {
       },
     })
       .then((res) => {
-        // console.log(date);
         Axios.patch(`${API_URL}/transactions/${idIndex}`, {
-          status: "Success",
-          finishDate: date,
+          status: "Waiting Verification",
+          paymentDate: date,
         })
           .then((res) => {
-            swal("Success!", "Verification payment success", "success");
-            this.getPaymentData();
+            swal(
+              "Success!",
+              "Your payment success. Please wait for admin confirmation",
+              "success",
+              {
+                button: { value: true },
+              }
+            ).then(() => {
+              this.getHistoryData();
+            });
           })
           .catch((err) => {
             swal(
               "Error!",
-              "Sorry, verification payment unsuccess. Please try again.",
+              "Sorry, your payment unsuccess. Please try again.",
               "error"
             );
             console.log(err);
@@ -60,31 +71,36 @@ class Payment extends React.Component {
       });
   };
 
-  renderPaymentData = () => {
-    return this.state.paymentData.map((val, idx) => {
-      const { id, userId, totalPrice, status } = val;
+  renderHistoryData = () => {
+    return this.state.historyData.map((val, idx) => {
+      const {
+        id,
+        totalPrice,
+        orderDate,
+        paymentDate,
+        finishDate,
+        status,
+      } = val;
       return (
         <tr>
-          <td>{idx + 1}</td>
           <td>{id}</td>
-          <td>{userId}</td>
           <td>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
             }).format(totalPrice)}
           </td>
+          <td>{orderDate}</td>
+          <td>{paymentDate}</td>
+          <td>{finishDate}</td>
           <td>{status}</td>
           <td>
-            {status === "Waiting Verification" ? (
-              <ButtonUI
-                type="contained"
-                onClick={() => this.verificationBtnHandler(id)}
-              >
-                Verification
+            {status === "Pending" ? (
+              <ButtonUI type="contained" onClick={() => this.payBtnHandler(id)}>
+                Pay
               </ButtonUI>
             ) : (
-              <ButtonUI type="disabled">Verification</ButtonUI>
+              <ButtonUI type="disabled">Pay</ButtonUI>
             )}
           </td>
         </tr>
@@ -95,22 +111,25 @@ class Payment extends React.Component {
   render() {
     return (
       <div className="container py-4">
-        <div className="payment">
+        <div className="history">
           <caption className="p-3">
-            <h2>Payment</h2>
+            <h2>History</h2>
           </caption>
-          <table className="payment-table">
+          <table className="history-table">
             <thead>
               <tr>
-                <td>No</td>
-                <td>Payment ID</td>
-                <td>User ID</td>
+                <td>Purchased ID</td>
                 <td>Total Price</td>
+                <td>Order Date</td>
+                <td>Payment Date</td>
+                <td>Finish Date</td>
                 <td>Status</td>
                 <td>Action</td>
+                {/* <td>No</td> */}
+                {/* <td>Purchased Item</td> */}
               </tr>
             </thead>
-            <tbody>{this.renderPaymentData()}</tbody>
+            <tbody>{this.renderHistoryData()}</tbody>
           </table>
         </div>
       </div>
@@ -124,4 +143,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Payment);
+export default connect(mapStateToProps)(History);

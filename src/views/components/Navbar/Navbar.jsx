@@ -87,49 +87,84 @@ class Navbar extends React.Component {
                   <p className="small ml-3 mr-4">{this.props.user.username}</p>
                 </DropdownToggle>
                 <DropdownMenu className="mt-2">
-                  <DropdownItem>
-                    <Link
-                      style={{ color: "inherit", textDecoration: "none" }}
-                      to="/admin/dashboard"
-                    >
-                      Dashboard
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem>Members</DropdownItem>
-                  <DropdownItem>
-                    <Link
-                      to="/payment"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      Payments
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem onClick={this.logoutBtnHandler}>
-                    <Link
-                      to="/"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      Logout
-                    </Link>
-                  </DropdownItem>
+                  {this.props.user.role === "admin" ? (
+                    <>
+                      <DropdownItem>
+                        <Link
+                          style={{ color: "inherit", textDecoration: "none" }}
+                          to="/admin/dashboard"
+                        >
+                          Dashboard
+                        </Link>
+                      </DropdownItem>
+                      <DropdownItem>Members</DropdownItem>
+                      <DropdownItem>
+                        <Link
+                          to="/payment"
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          Payments
+                        </Link>
+                      </DropdownItem>
+                      <DropdownItem onClick={this.logoutBtnHandler}>
+                        <Link
+                          to="/"
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          Logout
+                        </Link>
+                      </DropdownItem>
+                    </>
+                  ) : (
+                    <>
+                      <DropdownItem>
+                        <Link
+                          to="/wishlist"
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          Wishlist
+                        </Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link
+                          to="/history"
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          History
+                        </Link>
+                      </DropdownItem>
+                      <DropdownItem onClick={this.logoutBtnHandler}>
+                        <Link
+                          to="/"
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          Logout
+                        </Link>
+                      </DropdownItem>
+                    </>
+                  )}
                 </DropdownMenu>
               </Dropdown>
-              <Link
-                className="d-flex flex-row"
-                to="/cart"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <FontAwesomeIcon
-                  className="mr-2"
-                  icon={faShoppingCart}
-                  style={{ fontSize: 24 }}
-                />
-                <CircleBg>
-                  <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
-                    4
-                  </small>
-                </CircleBg>
-              </Link>
+              <>
+                {this.props.user.role === "user" ? (
+                  <Link
+                    className="d-flex flex-row"
+                    to="/cart"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <FontAwesomeIcon
+                      className="mr-2"
+                      icon={faShoppingCart}
+                      style={{ fontSize: 24 }}
+                    />
+                    <CircleBg>
+                      <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
+                        {this.props.user.qtyInCart}
+                      </small>
+                    </CircleBg>
+                  </Link>
+                ) : null}
+              </>
             </>
           ) : (
             <>

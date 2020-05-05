@@ -5,11 +5,11 @@ const init_state = {
   id: 0,
   username: "",
   fullName: "",
-  address: {},
   role: "",
   errMsg: "",
   cookieChecked: false,
   searchProduct: "",
+  qtyInCart: 0,
 };
 
 export default (state = init_state, action) => {
@@ -29,11 +29,20 @@ export default (state = init_state, action) => {
     case "ON_REGISTER_FAIL":
       return { ...state, errMsg: action.payload, cookieChecked: true };
     case ON_LOGOUT_SUCCESS:
-      return { ...init_state, cookieChecked: true };
+      return {
+        ...init_state,
+        cookieChecked: true,
+      };
     case "COOKIE_CHECK":
       return { ...state, cookieChecked: true };
     case "SEARCH_PRODUCT":
       return { ...state, cookieChecked: true, searchProduct: action.payload };
+    case "IN_CART":
+      return {
+        ...state,
+        cookieChecked: true,
+        qtyInCart: action.payload,
+      };
     default:
       return { ...state };
   }

@@ -150,34 +150,24 @@ class Report extends React.Component {
           );
         }
       });
-      // return (
-      //   <tr>
-      //     <td>No</td>
-      //     <td>Product Name</td>
-      //     <td>User Name</td>
-      //     <td>Quantity</td>
-      //   </tr>
-      // );
-    }
-  };
 
-  totalPrice = (id) => {
-    // console.log(this.state.successData[0]);
-    // if (id === this.state.successData[0].userId) {
-    // }
-    // Axios.get(`${API_URL}/transactions`, {
-    //   params: {
-    //     status: "Success",
-    //     userId: id
-    //   },
-    // })
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     this.setState({ successData: res.data });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+      // return this.state.productList.map((val) => {
+      //   let totalQty = 0;
+      //   this.state.transactionData.map((val) => {
+      //       const { transaction, productId, quantity } = val;
+      //       if (transaction.status === "Success") {
+      //         return (
+      //           <tr>
+      //             <td>{(idx += 1)}</td>
+      //             <td>{productId}</td>
+      //             <td>{transaction.userId}</td>
+      //             <td>{quantity}</td>
+      //           </tr>
+      //         );
+      //       }
+      //     });
+      // });
+    }
   };
 
   inputHandler = (e, field) => {

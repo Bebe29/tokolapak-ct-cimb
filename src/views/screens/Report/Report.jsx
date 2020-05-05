@@ -62,7 +62,7 @@ class Report extends React.Component {
   getTransactionDetailData = () => {
     Axios.get(`${API_URL}/transactionDetails`, {
       params: {
-        _expand: "product",
+        _expand: "transaction",
       },
     })
       .then((res) => {
@@ -135,18 +135,20 @@ class Report extends React.Component {
         }
       });
     } else if (this.state.reportType === "Product") {
-      return this.state.transactionData.map((val, idx) => {
-        const { product, quantity } = val;
-        // console.log(this.state.sum);
-
-        return (
-          <tr>
-            <td>{idx + 1}</td>
-            <td>{product.productName}</td>
-            <td>{}</td>
-            <td>{quantity}</td>
-          </tr>
-        );
+      let idx = 0;
+      return this.state.transactionData.map((val) => {
+        let totalQty = 0;
+        const { transaction, productId, quantity } = val;
+        if (transaction.status === "Success") {
+          return (
+            <tr>
+              <td>{(idx += 1)}</td>
+              <td>{productId}</td>
+              <td>{transaction.userId}</td>
+              <td>{quantity}</td>
+            </tr>
+          );
+        }
       });
       // return (
       //   <tr>

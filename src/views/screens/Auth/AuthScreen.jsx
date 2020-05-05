@@ -12,7 +12,7 @@ import { registerHandler, loginHandler } from "../../../redux/actions";
 
 class AuthScreen extends React.Component {
   state = {
-    activePage: "register",
+    activePage: this.props.user.signPage,
     loginForm: {
       username: "",
       password: "",
@@ -43,13 +43,6 @@ class AuthScreen extends React.Component {
         [field]: value,
       },
     });
-
-    // console.log(e.target);
-
-    // this.setState({ loginForm: {
-    //   ...this.state.loginForm,
-    //   [fieldYangDiganti]: value
-    // }})
   };
 
   registerBtnHandler = () => {
@@ -187,26 +180,6 @@ class AuthScreen extends React.Component {
     }
     return (
       <div className="container">
-        {/* <div className="d-flex mt-5">
-          <ButtonUI
-            type="outlined"
-            className={`auth-screen-btn ${
-              this.state.activePage == "register" ? "active" : null
-            } mr-4`}
-            onClick={() => this.setState({ activePage: "register" })}
-          >
-            Register
-          </ButtonUI>
-          <ButtonUI
-            type="outlined"
-            className={`auth-screen-btn ${
-              this.state.activePage == "login" ? "active" : null
-            }`}
-            onClick={() => this.setState({ activePage: "login" })}
-          >
-            Login
-          </ButtonUI>
-        </div> */}
         <div className="row mt-5">
           <div className="col-5">
             <div className="d-flex flex-row">

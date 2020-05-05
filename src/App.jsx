@@ -12,7 +12,9 @@ import AuthScreen from "./views/screens/Auth/AuthScreen";
 import ProductDetails from "./views/screens/ProductDetails/ProductDetails";
 import Cart from "./views/screens/Cart/Cart";
 import AdminDashboard from "./views/screens/Admin/AdminDashboard";
+import Members from "./views/screens/Admin/Members/Members";
 import Payment from "./views/screens/Payment/Payment";
+import Report from "./views/screens/Report/Report";
 import Wishlist from "./views/screens/Wishlist/Wishlist";
 import History from "./views/screens/History/History";
 import PageNotFound from "./views/screens/PageNotFound/PageNotFound";
@@ -34,8 +36,15 @@ class App extends React.Component {
   }
 
   renderAdminRoutes = () => {
-    if (this.props.user.role === "admin") {
-      return <Route exact path="/admin/dashboard" component={AdminDashboard} />;
+    if (this.props.user.role.toLowerCase() === "admin") {
+      return (
+        <>
+          <Route exact path="/admin/dashboard" component={AdminDashboard} />
+          <Route exact path="/admin/member" component={Members} />
+          <Route exact path="/admin/payment" component={Payment} />
+          <Route exact path="/admin/report" component={Report} />
+        </>
+      );
     }
   };
 
@@ -54,7 +63,6 @@ class App extends React.Component {
             />
             <Route exact path="/cart" component={Cart} />
             {this.renderAdminRoutes()}
-            <Route exact path="/payment" component={Payment} />
             <Route exact path="/wishlist" component={Wishlist} />
             <Route exact path="/history" component={History} />
             <Route path="*" component={PageNotFound} />

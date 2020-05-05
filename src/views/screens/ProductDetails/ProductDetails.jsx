@@ -9,7 +9,6 @@ import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 
 import { inCart } from "../../../redux/actions";
-// import Cookies from "universal-cookie";
 
 class ProductDetails extends React.Component {
   state = {
@@ -29,19 +28,7 @@ class ProductDetails extends React.Component {
     wishlistId: 0,
   };
 
-  // componentDidUpdate() {
-  //   if (this.props.user.id) {
-  //     alert("add");
-  //     const cookie = new Cookies();
-  //     cookie.set("cartData", JSON.stringify(this.props.user), { path: "/" });
-  //   }
-  // }
-
   addToCartHandler = () => {
-    // POST method ke /cart
-    // Isinya: userId, productId, quantity
-    // console.log(this.props.user.id);
-    // console.log(this.state.productData.id);
     Axios.get(`${API_URL}/carts`, {
       params: {
         userId: this.props.user.id,
@@ -57,7 +44,7 @@ class ProductDetails extends React.Component {
             quantity: quantity + 1,
           })
             .then((res) => {
-              this.props.inCart(id, qtyInCart + 1);
+              // this.props.inCart(id, qtyInCart + 1);
               swal(
                 "Add to cart",
                 "Your item has been added to your cart",
@@ -98,22 +85,51 @@ class ProductDetails extends React.Component {
       },
     })
       .then((res) => {
-        this.setState({ wishlistId: res.data[0].id });
-        Axios.post(`${API_URL}/wishlistDetails`, {
-          wishlistId: this.state.wishlistId,
-          productId: this.state.productData.id,
-        })
-          .then((res) => {
-            // console.log(res.data);
-            swal(
-              "Add to wishlist",
-              "Your item has been added to your wishlist",
-              "success"
-            );
+        if (res.data.length > 0) {
+          this.setState({ wishlistId: res.data[0].id });
+          console.log(this.state.wishlistId);
+          Axios.post(`${API_URL}/wishlistDetails`, {
+            wishlistId: this.state.wishlistId,
+            productId: this.state.productData.id,
           })
-          .catch((err) => {
-            console.log(err);
-          });
+            .then((res) => {
+              // console.log(res.data);
+              swal(
+                "Add to wishlist",
+                "Your item has been added to your wishlist",
+                "success"
+              );
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          Axios.post(`${API_URL}/wishlists`, {
+            userId: this.props.user.id,
+          })
+            .then((res) => {
+              console.log(res.data);
+              this.setState({ wishlistId: res.data[0].id });
+              console.log(this.state.wishlistId);
+              Axios.post(`${API_URL}/wishlistDetails`, {
+                wishlistId: this.state.wishlistId,
+                productId: this.state.productData.id,
+              })
+                .then((res) => {
+                  swal(
+                    "Add to wishlist",
+                    "Your item has been added to your wishlist",
+                    "success"
+                  );
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       })
       .catch((err) => {
         console.log(err);

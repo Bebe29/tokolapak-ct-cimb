@@ -35,7 +35,7 @@ class Wishlist extends React.Component {
           },
         })
           .then((res) => {
-            // console.log(res.data);
+            console.log(res.data);
             this.setState({ wishlistData: res.data });
           })
           .catch((err) => {
@@ -64,7 +64,7 @@ class Wishlist extends React.Component {
             quantity: quantity + 1,
           })
             .then((res) => {
-              this.props.inCart(id, qtyInCart + 1);
+              // this.props.inCart(id, qtyInCart + 1);
               swal(
                 "Add to cart",
                 "Your item has been added to your cart",

@@ -1,14 +1,14 @@
-.payment {
+.member {
   border-left: 1px solid #dbdde0;
   border-right: 1px solid #dbdde0;
   border-top: 1px solid #dbdde0;
 }
 
-.payment-table {
+.member-table {
   width: 100%;
 }
 
-.payment-table th,
+.member-table th,
 tr,
 td {
   border-top: 1px solid #dbdde0;
@@ -16,13 +16,13 @@ td {
   padding: 19px 0px 19px 24px;
 }
 
-.payment-table thead tr,
+.member-table thead tr,
 th {
   background-color: #f4f5f4;
   border-top: 0px !important;
 }
 
-.payment-table tr:hover {
+.member-table tr:hover {
   cursor: pointer;
   background-color: #f4f5f4;
 }
@@ -61,7 +61,7 @@ th {
   visibility: visible !important;
 }
 
-.payment-form-container {
+.member-form-container {
   border: 1px solid #dbdde0;
   border-radius: 8px;
   border-top: 0px;

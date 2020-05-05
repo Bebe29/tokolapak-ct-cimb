@@ -126,14 +126,14 @@ export const inCart = (id, qty) => {
         });
       })
       .catch((err) => {
-        dispatch({
-          type: "IN_CART",
-          payload: qty,
-        });
+        console.log(err);
       });
   };
-  // return {
-  //   type: "IN_CART",
-  //   payload: qty,
-  // };
+};
+
+export const signInRegister = (text) => {
+  return {
+    type: "SIGN_PAGE",
+    payload: text,
+  };
 };

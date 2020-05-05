@@ -3,7 +3,7 @@ import "./Cart.css";
 
 import { connect } from "react-redux";
 import { Alert, Modal, ModalHeader, ModalBody } from "reactstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
@@ -18,7 +18,14 @@ class Cart extends React.Component {
     cartData: [],
     paymentData: [],
     total: 0,
+    totalData: {
+      subTotal: 0,
+      ship: 0,
+      totalPay: 0,
+    },
+    idTransaction: 0,
     modalOpen: false,
+    shipping: 100000,
     // checkoutItems: [],
   };
 
@@ -41,31 +48,14 @@ class Cart extends React.Component {
   getPaymentData = () => {
     this.setState({
       paymentData: this.state.cartData,
+      totalData: {
+        subTotal: this.state.total,
+        ship: this.state.shipping,
+        totalPay: this.state.total + this.state.shipping,
+      },
     });
-    console.log(this.state.paymentData);
+    console.log(this.state.totalData);
   };
-
-  // checkoutHandler = (e, idx) => {
-  //   const { checked } = e.target;
-
-  //   if (checked) {
-  //     this.setState({ checkoutItems: [...this.state.checkoutItems, idx] });
-  //   } else {
-  //     this.setState({
-  //       checkoutItems: [
-  //         ...this.state.checkoutItems.filter((val) => val !== idx),
-  //       ],
-  //     });
-  //   }
-  // };
-
-  // checkboxHandler = (e, index) => {
-  //   const { checked } = e.target;
-
-  //   this.setState({
-  //     checkoutItems: [...this.state.checkoutItems, index],
-  //   });
-  // };
 
   renderCartData = (condition, data) => {
     return data.map((val, idx) => {
@@ -94,16 +84,10 @@ class Cart extends React.Component {
             <td>
               <ButtonUI
                 type="outlined"
-                onClick={() => this.deleteCartHandler(id, idx)}
+                onClick={() => this.deleteCartHandler(id, idx, "Item")}
               >
                 Delete Item
               </ButtonUI>
-              {/* <input
-                type="checkbox"
-                onChange={(e) => this.checkboxHandler(e, idx)}
-                // className="mt-3"
-                // name="showPasswordRegister"
-              /> */}
             </td>
           </tr>
         );
@@ -145,39 +129,38 @@ class Cart extends React.Component {
 
   countTotalPay = () => {
     this.state.cartData.map((val) => {
-      const { quantity, product, id } = val;
+      const { quantity, product } = val;
       const { price } = product;
       const sum = quantity * price;
-      // const item = { id, quantity, product };
       this.setState({
         total: this.state.total + sum,
-        // itemPurchased: [...this.state.itemPurchased, item],
       });
-      // console.log(this.state.total);
-      // console.log(this.state.itemPurchased);
     });
   };
 
-  deleteCartHandler = (id, idx) => {
-    Axios.delete(`${API_URL}/carts/${id}`)
+  deleteCartHandler = (idCart, idx, condition) => {
+    const { id, qtyInCart } = this.props.user;
+    if (condition === "Item") {
+      this.props.inCart(id, qtyInCart - this.state.cartData[idx].quantity);
+    } else {
+      this.props.inCart(id, 0);
+    }
+    Axios.delete(`${API_URL}/carts/${idCart}`)
       .then((res) => {
         this.getCartData();
         this.setState({
           total: 0,
-          // itemPurchased: [],
         });
       })
       .catch((err) => {
         console.log(err);
       });
-    // const { id, qtyInCart } = this.props.user;
-    // this.props.inCart(id, qtyInCart - this.state.cartData[idx].quantity);
   };
 
   clearCartHandler = () => {
-    this.state.paymentData.map((val) => {
+    this.state.paymentData.map((val, idx) => {
       const { id } = val;
-      this.deleteCartHandler(id);
+      this.deleteCartHandler(id, idx);
     });
   };
 
@@ -186,13 +169,15 @@ class Cart extends React.Component {
     const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
     Axios.post(`${API_URL}/transactions`, {
       userId: this.props.user.id,
-      totalPrice: this.state.total,
+      totalPrice: this.state.total + this.state.shipping,
       status: "Pending",
       orderDate: date,
       paymentDate: "-",
       finishDate: "-",
+      shipping: this.state.shipping,
     })
       .then((res) => {
+        this.setState({ idTransaction: res.data.id });
         this.toggleModal();
         this.state.cartData.map((val) => {
           const { productId, product, quantity } = val;
@@ -227,14 +212,12 @@ class Cart extends React.Component {
     })
       .then((res) => {
         Axios.patch(`${API_URL}/transactions/${this.state.idTransaction}`, {
-          status: "Waiting Verification",
+          status: "On Progress",
           paymentDate: date,
         })
           .then((res) => {
             this.toggleModal();
-            swal("Success!", "Your payment success", "success").then(() => {
-              // <Redirect to={"/history"} />;
-            });
+            swal("Success!", "Your payment success", "success");
           })
           .catch((err) => {
             swal(
@@ -257,6 +240,13 @@ class Cart extends React.Component {
   componentDidMount() {
     this.getCartData();
   }
+
+  inputHandler = (e, field) => {
+    const { value } = e.target;
+    this.setState({
+      [field]: parseInt(value),
+    });
+  };
 
   render() {
     return (
@@ -281,13 +271,56 @@ class Cart extends React.Component {
               <tfoot>
                 <tr>
                   <td colSpan={2} className="text-right">
+                    SubTotal
+                  </td>
+                  <td colSpan={4}>
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(this.state.total)}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2} className="text-right">
+                    Shipping Method
+                  </td>
+                  <td colSpan={4}>
+                    <div className="col-6">
+                      <select
+                        value={this.state.shipping}
+                        className="custom-text-input h-100 pl-3"
+                        onChange={(e) => this.inputHandler(e, "shipping")}
+                      >
+                        <option value="100000">Instant</option>
+                        <option value="50000">Same Day</option>
+                        <option value="20000">Express</option>
+                        <option value="0">Economy</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2} className="text-right">
+                    Shipping Cost
+                  </td>
+                  <td colSpan={4}>
+                    {this.state.shipping === 0
+                      ? "FREE"
+                      : new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        }).format(this.state.shipping)}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2} className="text-right">
                     Total
                   </td>
                   <td colSpan={3}>
                     {new Intl.NumberFormat("id-ID", {
                       style: "currency",
                       currency: "IDR",
-                    }).format(this.state.total)}
+                    }).format(this.state.total + this.state.shipping)}
                   </td>
                   <td>
                     <ButtonUI
@@ -319,11 +352,6 @@ class Cart extends React.Component {
             </caption>
           </ModalHeader>
           <ModalBody>
-            {/* <div className="payment">
-              <caption className="p-3">
-                <h5>Address</h5>
-              </caption>
-            </div> */}
             <div className="checkout">
               <caption className="p-3">
                 <h5>Items</h5>
@@ -345,13 +373,37 @@ class Cart extends React.Component {
                 <tfoot>
                   <tr>
                     <td colSpan={5} className="text-right">
+                      SubTotal
+                    </td>
+                    <td colSpan={1} className="text-left">
+                      {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      }).format(this.state.totalData.subTotal)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={5} className="text-right">
+                      Shipping
+                    </td>
+                    <td colSpan={1} className="text-left">
+                      {this.state.totalData.ship === 0
+                        ? "FREE"
+                        : new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                          }).format(this.state.totalData.ship)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={5} className="text-right">
                       Total
                     </td>
                     <td colSpan={1} className="text-left">
                       {new Intl.NumberFormat("id-ID", {
                         style: "currency",
                         currency: "IDR",
-                      }).format(this.state.total)}
+                      }).format(this.state.totalData.totalPay)}
                     </td>
                   </tr>
                 </tfoot>
@@ -378,12 +430,7 @@ class Cart extends React.Component {
                   type="contained"
                   onClick={this.payBtnHandler}
                 >
-                  {/* <Link
-                    to="/payment"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  > */}
                   Pay Now
-                  {/* </Link> */}
                 </ButtonUI>
               </div>
             </div>

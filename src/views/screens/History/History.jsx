@@ -6,15 +6,23 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 import swal from "sweetalert";
+import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
 class History extends React.Component {
   state = {
     historyData: [],
+    detailData: [],
+    productList: [],
+    modalOpen: false,
   };
 
   componentDidMount() {
     this.getHistoryData();
   }
+
+  toggleModal = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
+  };
 
   getHistoryData = () => {
     Axios.get(`${API_URL}/transactions`, {
@@ -42,7 +50,7 @@ class History extends React.Component {
     })
       .then((res) => {
         Axios.patch(`${API_URL}/transactions/${idIndex}`, {
-          status: "Waiting Verification",
+          status: "On Progress",
           paymentDate: date,
         })
           .then((res) => {
@@ -80,28 +88,83 @@ class History extends React.Component {
         paymentDate,
         finishDate,
         status,
+        shipping,
       } = val;
       return (
+        <>
+          <tr>
+            <td>{id}</td>
+            <td>
+              {new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+              }).format(totalPrice)}
+            </td>
+            <td>{status}</td>
+            <td>
+              {status === "Pending" ? (
+                <ButtonUI
+                  type="contained"
+                  onClick={() => this.payBtnHandler(id)}
+                >
+                  Pay
+                </ButtonUI>
+              ) : (
+                <ButtonUI type="disabled">Pay</ButtonUI>
+              )}
+              <ButtonUI
+                type="textual"
+                className="mt-3"
+                onClick={() => this.renderDetail(idx)}
+              >
+                Detail
+              </ButtonUI>
+            </td>
+          </tr>
+        </>
+      );
+    });
+  };
+
+  renderDetail = (idx) => {
+    Axios.get(`${API_URL}/transactions`, {
+      params: {
+        id: this.state.historyData[idx].id,
+        _embed: "transactionDetails",
+      },
+    })
+      .then((res) => {
+        // console.log(res.data[0].transactionDetails);
+        this.setState({
+          detailData: res.data,
+          productList: res.data[0].transactionDetails,
+          modalOpen: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  renderModalProduct = () => {
+    return this.state.productList.map((val) => {
+      console.log(val);
+      const { productID, quantity, total, price } = val;
+      return (
         <tr>
-          <td>{id}</td>
+          <td>{productID}</td>
           <td>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
-            }).format(totalPrice)}
+            }).format(price)}
           </td>
-          <td>{orderDate}</td>
-          <td>{paymentDate}</td>
-          <td>{finishDate}</td>
-          <td>{status}</td>
+          <td>{quantity}</td>
           <td>
-            {status === "Pending" ? (
-              <ButtonUI type="contained" onClick={() => this.payBtnHandler(id)}>
-                Pay
-              </ButtonUI>
-            ) : (
-              <ButtonUI type="disabled">Pay</ButtonUI>
-            )}
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }).format(total)}
           </td>
         </tr>
       );
@@ -109,30 +172,77 @@ class History extends React.Component {
   };
 
   render() {
+    const {
+      orderDate,
+      paymentDate,
+      finishDate,
+      shipping,
+      transactionDetails,
+    } = this.state.detailData;
     return (
-      <div className="container py-4">
-        <div className="history">
-          <caption className="p-3">
-            <h2>History</h2>
-          </caption>
-          <table className="history-table">
-            <thead>
-              <tr>
-                <td>Purchased ID</td>
-                <td>Total Price</td>
-                <td>Order Date</td>
-                <td>Payment Date</td>
-                <td>Finish Date</td>
-                <td>Status</td>
-                <td>Action</td>
-                {/* <td>No</td> */}
-                {/* <td>Purchased Item</td> */}
-              </tr>
-            </thead>
-            <tbody>{this.renderHistoryData()}</tbody>
-          </table>
+      <>
+        <div className="container py-4">
+          <div className="history">
+            <caption className="p-3">
+              <h2>History</h2>
+            </caption>
+            <table className="history-table">
+              <thead>
+                <tr>
+                  <td>Purchased ID</td>
+                  <td>Total Price</td>
+                  <td>Status</td>
+                  <td>Action</td>
+                  {/* <td>No</td> */}
+                  {/* <td>Purchased Item</td> */}
+                </tr>
+              </thead>
+              <tbody>{this.renderHistoryData()}</tbody>
+            </table>
+          </div>
         </div>
-      </div>
+        <Modal
+          toggle={this.toggleModal}
+          isOpen={this.state.modalOpen}
+          className="edit-modal"
+        >
+          <ModalHeader toggle={this.toggleModal}>
+            <caption>
+              <h3>Detail Transaction</h3>
+            </caption>
+          </ModalHeader>
+          <ModalBody>
+            <div>Order Date: {orderDate}</div>
+            <div>Payment Date: {paymentDate}</div>
+            <div>Finish Date: {finishDate}</div>
+            <div>Shipping cost: {shipping}</div>
+            <div>Product:</div>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product ID</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>{this.renderModalProduct()}</tbody>
+              </table>
+            </div>
+            <div></div>
+            <div>
+              <ButtonUI
+                className="w-100"
+                onClick={this.toggleModal}
+                type="outlined"
+              >
+                Close
+              </ButtonUI>
+            </div>
+          </ModalBody>
+        </Modal>
+      </>
     );
   }
 }

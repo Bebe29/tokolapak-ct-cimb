@@ -10,18 +10,20 @@ const init_state = {
   cookieChecked: false,
   searchProduct: "",
   qtyInCart: 0,
+  signPage: "register",
 };
 
 export default (state = init_state, action) => {
   switch (action.type) {
     case ON_LOGIN_SUCCESS:
-      const { username, fullName, role, id } = action.payload;
+      const { username, fullName, role, id, qtyInCart } = action.payload;
       return {
         ...state,
         username,
         fullName,
         role,
         id,
+        qtyInCart,
         cookieChecked: true,
       };
     case ON_LOGIN_FAIL:
@@ -42,6 +44,12 @@ export default (state = init_state, action) => {
         ...state,
         cookieChecked: true,
         qtyInCart: action.payload,
+      };
+    case "SIGN_PAGE":
+      return {
+        ...state,
+        cookieChecked: true,
+        signPage: action.payload,
       };
     default:
       return { ...state };

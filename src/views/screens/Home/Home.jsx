@@ -142,7 +142,7 @@ class Home extends React.Component {
       if (
         productName
           .toLowerCase()
-          .startsWith(this.props.user.searchProduct.toLowerCase())
+          .includes(this.props.user.searchProduct.toLowerCase())
       ) {
         return (
           <Link to={`/product/${id}`}>

@@ -11,6 +11,7 @@ class Report extends React.Component {
   state = {
     userList: [],
     successData: [],
+    transactionData: [],
     productList: [],
     price: [],
     reportType: "User",
@@ -18,11 +19,14 @@ class Report extends React.Component {
   };
 
   componentDidMount() {
-    this.getReportData();
+    this.getUserData();
+    this.getSuccessData();
+    this.getTransactionDetailData();
+    this.getProductData();
     // this.countTotalPrice()
   }
 
-  getReportData = () => {
+  getUserData = () => {
     Axios.get(`${API_URL}/users`, {
       params: {
         role: "User",
@@ -32,32 +36,49 @@ class Report extends React.Component {
       .then((res) => {
         this.setState({ userList: res.data });
         console.log(this.state.userList);
-        Axios.get(`${API_URL}/transactions`, {
-          params: {
-            status: "Success",
-            _expand: "User",
-            _embed: "transactionDetails",
-          },
-        })
-          .then((res) => {
-            this.setState({ successData: res.data });
-            console.log(this.state.successData);
-            Axios.get(`${API_URL}/transactionDetails`, {
-              params: {
-                _expand: "product",
-              },
-            })
-              .then((res) => {
-                this.setState({ productList: res.data });
-                console.log(this.state.productList);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  getSuccessData = () => {
+    Axios.get(`${API_URL}/transactions`, {
+      params: {
+        status: "Success",
+        _expand: "User",
+        _embed: "transactionDetails",
+      },
+    })
+      .then((res) => {
+        this.setState({ successData: res.data });
+        console.log(this.state.successData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  getTransactionDetailData = () => {
+    Axios.get(`${API_URL}/transactionDetails`, {
+      params: {
+        _expand: "product",
+      },
+    })
+      .then((res) => {
+        this.setState({ transactionData: res.data });
+        console.log(this.state.transactionData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  getProductData = () => {
+    Axios.get(`${API_URL}/products`)
+      .then((res) => {
+        this.setState({ productList: res.data });
+        console.log(this.state.productList);
       })
       .catch((err) => {
         console.log(err);
@@ -88,14 +109,19 @@ class Report extends React.Component {
   renderReportData = () => {
     if (this.state.reportType === "User") {
       return this.state.userList.map((val, idx) => {
+        let totalBuy = 0;
         const { username, transactions, id } = val;
         if (transactions.length > 0) {
-          // console.log(this.state.sum);
+          this.state.successData.map((val) => {
+            if (id == val.userId) {
+              totalBuy += val.totalPrice;
+            }
+          });
           return (
             <tr>
               <td>{idx + 1}</td>
               <td>{username}</td>
-              <td>{this.totalPrice(id)}</td>
+              <td>{totalBuy}</td>
             </tr>
           );
         } else {
@@ -109,7 +135,7 @@ class Report extends React.Component {
         }
       });
     } else if (this.state.reportType === "Product") {
-      return this.state.productList.map((val, idx) => {
+      return this.state.transactionData.map((val, idx) => {
         const { product, quantity } = val;
         // console.log(this.state.sum);
 
@@ -134,9 +160,9 @@ class Report extends React.Component {
   };
 
   totalPrice = (id) => {
-    //  if (id === this.state.successData[0].userId) {
-    //    console.log(this.state.successData[0].totalPrice)
-    //  }
+    // console.log(this.state.successData[0]);
+    // if (id === this.state.successData[0].userId) {
+    // }
     // Axios.get(`${API_URL}/transactions`, {
     //   params: {
     //     status: "Success",
@@ -151,12 +177,6 @@ class Report extends React.Component {
     //     console.log(err);
     //   });
   };
-
-  // count = () => {
-  //   this.state.price.map(val => {
-  //     console.log(val)
-  //   })
-  // }
 
   inputHandler = (e, field) => {
     const { value } = e.target;

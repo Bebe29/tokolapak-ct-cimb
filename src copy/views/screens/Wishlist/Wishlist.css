@@ -1,0 +1,23 @@
+.wishlist {
+  border-left: 1px solid #dbdde0;
+  border-right: 1px solid #dbdde0;
+  border-top: 1px solid #dbdde0;
+}
+
+.wishlist-table {
+  width: 100%;
+}
+
+.wishlist-table th,
+tr,
+td {
+  border-top: 1px solid #dbdde0;
+  border-bottom: 1px solid #dbdde0;
+  padding: 19px 0px 19px 24px;
+}
+
+.wishlist-table thead tr,
+th {
+  background-color: #f4f5f4;
+  border-top: 0px !important;
+}

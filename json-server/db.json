@@ -1,8 +1,7 @@
 {
   "users": [
     {
-      "username": "seto",
-      "fullName": "seto haha",
+      "username": "andi",
       "password": "password",
       "email": "seto",
       "role": "User",
@@ -55,40 +54,8 @@
       "id": 2
     },
     {
-      "productName": "iPhone 11 Pro",
-      "price": 22000000,
-      "category": "Phone",
-      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone-11-pro-midnight-green.png",
-      "desc": "Hp kamera boba",
-      "id": 4
-    },
-    {
-      "productName": "iMac Pro",
-      "price": 40000000,
-      "category": "Desktop",
-      "image": "https://ibox.co.id/media/wysiwyg/iMacPro/imac-pro_02-min.png",
-      "desc": "Desktop para sultan",
-      "id": 5
-    },
-    {
-      "productName": "MacBook Pro (16 Inci)",
-      "price": 37000000,
-      "category": "Laptop",
-      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/b/mbp-16-space-gray.png",
-      "desc": "Laptop terbaik",
-      "id": 7
-    },
-    {
-      "productName": "iPhone Xs",
-      "price": 20000000,
-      "category": "Phone",
-      "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphonexs-max-gold_3_3.png",
-      "desc": "Hp Xs",
-      "id": 8
-    },
-    {
-      "productName": "MacBook Air",
-      "price": 15000000,
+      "productName": "Macbook Pro",
+      "price": "30000000",
       "category": "Laptop",
       "image": "https://ibox.co.id/media/catalog/product/cache/3/image/9df78eab33525d08d6e5fb8d27136e95/m/a/macbook_air_pf-screen_1_3_1.png",
       "desc": "MacBook Air hadir kembali loh",
@@ -151,174 +118,118 @@
   "carts": [],
   "transactions": [
     {
-      "userId": 5,
-      "totalPrice": 46000000,
-      "status": "Success",
-      "orderDate": "5-5-2020",
-      "paymentDate": "5-5-2020",
-      "finishDate": "5-5-2020",
-      "shipping": 0,
+      "userId": 4,
+      "totalPrice": 40100000,
+      "status": "completed",
+      "checkoutDate": 1588598503706,
+      "completedDate": 1588598503706,
       "id": 1
     },
     {
-      "userId": 5,
-      "totalPrice": 5700000,
-      "status": "Success",
-      "orderDate": "5-5-2020",
-      "paymentDate": "5-5-2020",
-      "finishDate": "5-5-2020",
-      "shipping": 100000,
+      "userId": 4,
+      "totalPrice": 40100000,
+      "status": "completed",
+      "checkoutDate": 1588598760781,
+      "completedDate": 1588598503706,
       "id": 2
     },
     {
-      "userId": 5,
-      "totalPrice": 25650000,
-      "status": "Pending",
-      "orderDate": "5-5-2020",
-      "paymentDate": "-",
-      "finishDate": "-",
-      "shipping": 50000,
+      "userId": 4,
+      "totalPrice": 25100000,
+      "status": "pending",
+      "checkoutDate": 1588598935533,
+      "completedDate": 1588598503706,
       "id": 3
     },
     {
-      "userId": 1,
-      "totalPrice": 40000000,
-      "status": "Success",
-      "orderDate": "5-5-2020",
-      "paymentDate": "5-5-2020",
-      "finishDate": "5-5-2020",
-      "shipping": 0,
+      "userId": 4,
+      "totalPrice": 10100000,
+      "status": "completed",
+      "checkoutDate": 1588599180422,
+      "completedDate": 1588598503706,
       "id": 4
     },
     {
       "userId": 1,
-      "totalPrice": 39100000,
-      "status": "Pending",
-      "orderDate": "5-5-2020",
-      "paymentDate": "-",
-      "finishDate": "-",
-      "shipping": 100000,
+      "totalPrice": 52100000,
+      "status": "completed",
+      "checkoutDate": 1588733329780,
+      "completedDate": 1588736310197,
       "id": 5
     },
     {
       "userId": 1,
-      "totalPrice": 40100000,
-      "status": "Success",
-      "orderDate": "6-5-2020",
-      "paymentDate": "6-5-2020",
-      "finishDate": "6-5-2020",
-      "shipping": 100000,
+      "totalPrice": 55050000,
+      "status": "completed",
+      "checkoutDate": 1588734379877,
+      "completedDate": 1588598503706,
       "id": 6
-    },
-    {
-      "userId": 5,
-      "totalPrice": 40100000,
-      "status": "Success",
-      "orderDate": "6-5-2020",
-      "paymentDate": "6-5-2020",
-      "finishDate": "6-5-2020",
-      "shipping": 100000,
-      "id": 7
-    },
-    {
-      "userId": 5,
-      "totalPrice": 5700000,
-      "status": "Success",
-      "orderDate": "6-5-2020",
-      "paymentDate": "6-5-2020",
-      "finishDate": "6-5-2020",
-      "shipping": 100000,
-      "id": 8
     }
   ],
   "transactionDetails": [
     {
-      "transactionId": 1,
-      "productId": 10,
-      "price": 24000000,
-      "quantity": 1,
-      "total": 24000000,
+      "transactionId": 2,
+      "productId": 3,
+      "price": 20000000,
+      "quantity": 2,
+      "totalPrice": 40000000,
       "id": 1
     },
     {
-      "transactionId": 1,
-      "productId": 4,
-      "price": 22000000,
-      "quantity": 1,
-      "total": 22000000,
+      "transactionId": 3,
+      "productId": 1,
+      "price": 5000000,
+      "quantity": 2,
+      "totalPrice": 10000000,
       "id": 2
     },
     {
-      "transactionId": 2,
-      "productId": 1,
-      "price": 5600000,
+      "transactionId": 3,
+      "productId": 2,
+      "price": 15000000,
       "quantity": 1,
-      "total": 5600000,
+      "totalPrice": 15000000,
       "id": 3
     },
     {
-      "transactionId": 3,
+      "transactionId": 4,
       "productId": 1,
-      "price": 5600000,
-      "quantity": 1,
-      "total": 5600000,
+      "price": 5000000,
+      "quantity": 2,
+      "totalPrice": 10000000,
       "id": 4
     },
     {
-      "transactionId": 3,
-      "productId": 8,
-      "price": 20000000,
-      "quantity": 1,
-      "total": 20000000,
+      "transactionId": 5,
+      "productId": 4,
+      "price": "23000000",
+      "quantity": 2,
+      "totalPrice": 46000000,
       "id": 5
     },
     {
-      "transactionId": 4,
-      "productId": 5,
-      "price": 40000000,
+      "transactionId": 5,
+      "productId": 8,
+      "price": "6000000",
       "quantity": 1,
-      "total": 40000000,
+      "totalPrice": 6000000,
       "id": 6
     },
     {
-      "transactionId": 5,
-      "productId": 2,
-      "price": 15000000,
+      "transactionId": 6,
+      "productId": 3,
+      "price": 20000000,
       "quantity": 2,
-      "total": 30000000,
+      "totalPrice": 40000000,
       "id": 7
     },
     {
-      "transactionId": 5,
-      "productId": 11,
-      "price": 9000000,
-      "quantity": 1,
-      "total": 9000000,
-      "id": 8
-    },
-    {
       "transactionId": 6,
-      "productId": 5,
-      "price": 40000000,
+      "productId": 2,
+      "price": 15000000,
       "quantity": 1,
-      "total": 40000000,
-      "id": 9
-    },
-    {
-      "transactionId": 7,
-      "productId": 5,
-      "price": 40000000,
-      "quantity": 1,
-      "total": 40000000,
-      "id": 10
-    },
-    {
-      "transactionId": 8,
-      "productId": 1,
-      "price": 5600000,
-      "quantity": 1,
-      "total": 5600000,
-      "id": 11
+      "totalPrice": 15000000,
+      "id": 8
     }
   ]
 }

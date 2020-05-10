@@ -16,11 +16,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 import "./Navbar.css";
 import ButtonUI from "../Button/Button";
-import {
-  logoutHandler,
-  searchProduct,
-  signInRegister,
-} from "../../../redux/actions";
+import { logoutHandler, navbarInputHandler } from "../../../redux/actions";
 
 const CircleBg = ({ children }) => {
   return <div className="circle-bg">{children}</div>;
@@ -74,7 +70,7 @@ class Navbar extends React.Component {
           className="px-5 d-flex flex-row justify-content-start"
         >
           <input
-            value={this.state.searchBarInput}
+            onChange={this.props.onChangeSearch}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
             onChange={(e) => this.inputHandler(e, "searchBarInput")}
@@ -97,7 +93,7 @@ class Navbar extends React.Component {
                   <p className="small ml-3 mr-4">{this.props.user.username}</p>
                 </DropdownToggle>
                 <DropdownMenu className="mt-2">
-                  {this.props.user.role.toLowerCase() === "admin" ? (
+                  {this.props.user.role == "admin" ? (
                     <>
                       <DropdownItem>
                         <Link
@@ -107,89 +103,49 @@ class Navbar extends React.Component {
                           Dashboard
                         </Link>
                       </DropdownItem>
+                      <DropdownItem>Members</DropdownItem>
                       <DropdownItem>
                         <Link
-                          to="/admin/member"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          Members
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link
-                          to="/admin/payment"
-                          style={{ textDecoration: "none", color: "inherit" }}
+                          style={{ color: "inherit", textDecoration: "none" }}
+                          to="/admin/payments"
                         >
                           Payments
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link
-                          to="/admin/report"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          Report
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem onClick={this.logoutBtnHandler}>
-                        <Link
-                          to="/"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          Logout
                         </Link>
                       </DropdownItem>
                     </>
                   ) : (
                     <>
+                      <DropdownItem>Wishlist</DropdownItem>
                       <DropdownItem>
-                        <Link
-                          to="/wishlist"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          Wishlist
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <Link
-                          to="/history"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          History
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem onClick={this.logoutBtnHandler}>
-                        <Link
-                          to="/"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          Logout
-                        </Link>
+                        <Link to="/history">History</Link>
                       </DropdownItem>
                     </>
                   )}
                 </DropdownMenu>
               </Dropdown>
-              <>
-                {this.props.user.role.toLowerCase() === "user" ? (
-                  <Link
-                    className="d-flex flex-row"
-                    to="/cart"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <FontAwesomeIcon
-                      className="mr-2"
-                      icon={faShoppingCart}
-                      style={{ fontSize: 24 }}
-                    />
-                    <CircleBg>
-                      <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
-                        {this.props.user.qtyInCart}
-                      </small>
-                    </CircleBg>
-                  </Link>
-                ) : null}
-              </>
+              <Link
+                className="d-flex flex-row"
+                to="/cart"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <FontAwesomeIcon
+                  className="mr-2"
+                  icon={faShoppingCart}
+                  style={{ fontSize: 24 }}
+                />
+                <CircleBg>
+                  <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
+                    {this.props.user.cartItems}
+                  </small>
+                </CircleBg>
+              </Link>
+              <ButtonUI
+                onClick={this.logoutBtnHandler}
+                className="ml-3"
+                type="textual"
+              >
+                Logout
+              </ButtonUI>
             </>
           ) : (
             <>
@@ -227,8 +183,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   onLogout: logoutHandler,
-  searchProduct,
-  signInRegister,
+  onChangeSearch: navbarInputHandler,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

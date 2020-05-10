@@ -8,9 +8,7 @@ const init_state = {
   role: "",
   errMsg: "",
   cookieChecked: false,
-  searchProduct: "",
-  qtyInCart: 0,
-  signPage: "register",
+  cartItems: 0,
 };
 
 export default (state = init_state, action) => {
@@ -37,20 +35,8 @@ export default (state = init_state, action) => {
       };
     case "COOKIE_CHECK":
       return { ...state, cookieChecked: true };
-    case "SEARCH_PRODUCT":
-      return { ...state, cookieChecked: true, searchProduct: action.payload };
-    case "IN_CART":
-      return {
-        ...state,
-        cookieChecked: true,
-        qtyInCart: action.payload,
-      };
-    case "SIGN_PAGE":
-      return {
-        ...state,
-        cookieChecked: true,
-        signPage: action.payload,
-      };
+    case "FILL_CART":
+      return { ...state, cartItems: action.payload };
     default:
       return { ...state };
   }

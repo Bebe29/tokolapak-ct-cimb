@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+
 import { Carousel, CarouselControl, CarouselItem } from "reactstrap";
 import Axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -53,6 +55,7 @@ class Home extends React.Component {
     activeIndex: 0,
     animating: false,
     bestSellerData: [],
+    categoryFilter: "",
   };
 
   renderCarouselItems = () => {
@@ -138,15 +141,22 @@ class Home extends React.Component {
 
   renderProducts = () => {
     return this.state.bestSellerData.map((val) => {
-      const { id, productName } = val;
       if (
-        productName
+        val.productName
           .toLowerCase()
-          .includes(this.props.user.searchProduct.toLowerCase())
+          .includes(this.props.search.searchValue.toLowerCase()) &&
+        val.category.toLowerCase().includes(this.state.categoryFilter)
       ) {
         return (
-          <Link to={`/product/${id}`}>
-            <ProductCard key={`bestseller-${id}`} data={val} className="m-2" />
+          <Link
+            style={{ textDecoration: "none", color: "inherit" }}
+            to={`/product/${val.id}`}
+          >
+            <ProductCard
+              key={`bestseller-${val.id}`}
+              data={val}
+              className="m-2"
+            />
           </Link>
         );
       }
@@ -161,45 +171,40 @@ class Home extends React.Component {
     return (
       <div>
         <div className="d-flex justify-content-center flex-row align-items-center my-3">
-          <Link to="/" style={{ color: "inherit" }}>
-            <h6
-              className="mx-4 font-weight-bold"
-              onClick={() => this.getBestSellerData("All")}
-            >
-              ALL
-            </h6>
+          <Link
+            to="/"
+            style={{ color: "inherit" }}
+            onClick={() => this.setState({ categoryFilter: "" })}
+          >
+            <h6 className="mx-4 font-weight-bold">ALL CATEGORY</h6>
           </Link>
-          <Link to="/" style={{ color: "inherit" }}>
-            <h6
-              className="mx-4 font-weight-bold"
-              onClick={() => this.getBestSellerData("Phone")}
-            >
-              PHONE
-            </h6>
+          <Link
+            to="/"
+            style={{ color: "inherit" }}
+            onClick={() => this.setState({ categoryFilter: "phone" })}
+          >
+            <h6 className="mx-4 font-weight-bold">PHONE</h6>
           </Link>
-          <Link to="/" style={{ color: "inherit" }}>
-            <h6
-              className="mx-4 font-weight-bold"
-              onClick={() => this.getBestSellerData("Laptop")}
-            >
-              LAPTOP
-            </h6>
+          <Link
+            to="/"
+            style={{ color: "inherit" }}
+            onClick={() => this.setState({ categoryFilter: "laptop" })}
+          >
+            <h6 className="mx-4 font-weight-bold">LAPTOP</h6>
           </Link>
-          <Link to="/" style={{ color: "inherit" }}>
-            <h6
-              className="mx-4 font-weight-bold"
-              onClick={() => this.getBestSellerData("Tab")}
-            >
-              TAB
-            </h6>
+          <Link
+            to="/"
+            style={{ color: "inherit" }}
+            onClick={() => this.setState({ categoryFilter: "tab" })}
+          >
+            <h6 className="mx-4 font-weight-bold">TAB</h6>
           </Link>
-          <Link to="/" style={{ color: "inherit" }}>
-            <h6
-              className="mx-4 font-weight-bold"
-              onClick={() => this.getBestSellerData("Desktop")}
-            >
-              DESKTOP
-            </h6>
+          <Link
+            to="/"
+            style={{ color: "inherit" }}
+            onClick={() => this.setState({ categoryFilter: "desktop" })}
+          >
+            <h6 className="mx-4 font-weight-bold">DESKTOP</h6>
           </Link>
         </div>
         <Carousel
@@ -283,7 +288,7 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
+    search: state.search,
   };
 };
 

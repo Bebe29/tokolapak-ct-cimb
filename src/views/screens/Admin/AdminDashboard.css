@@ -9,15 +9,15 @@
 }
 
 .dashboard-table th,
-tr,
-td {
+.dashboard-table tr,
+.dashboard-table td {
   border-top: 1px solid #dbdde0;
   border-bottom: 1px solid #dbdde0;
   padding: 19px 0px 19px 24px;
 }
 
 .dashboard-table thead tr,
-th {
+.dashboard-table thead th {
   background-color: #f4f5f4;
   border-top: 0px !important;
 }

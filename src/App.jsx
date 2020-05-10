@@ -20,40 +20,40 @@ import History from "./views/screens/History/History";
 import PageNotFound from "./views/screens/PageNotFound/PageNotFound";
 
 import { userKeepLogin, cookieChecker } from "./redux/actions";
+import Payments from "./views/screens/Admin/Payments";
+import PageNotFound from "./views/screens/PageNotFound";
+import History from "./views/screens/History/History";
+import Report from "./views/screens/Admin/Report";
 
 const cookieObj = new Cookie();
 
 class App extends React.Component {
   componentDidMount() {
-    setTimeout(() => {
-      let cookieResult = cookieObj.get("authData", { path: "/" });
-      if (cookieResult) {
-        this.props.keepLogin(cookieResult);
-      } else {
-        this.props.cookieChecker();
-      }
-    }, 0);
+    let cookieResult = cookieObj.get("authData", { path: "/" });
+    if (cookieResult) {
+      this.props.keepLogin(cookieResult);
+    } else {
+      this.props.cookieChecker();
+    }
   }
 
   renderAdminRoutes = () => {
-    if (this.props.user.role.toLowerCase() === "admin") {
+    if (this.props.user.role === "admin") {
       return (
         <>
           <Route exact path="/admin/dashboard" component={AdminDashboard} />
-          <Route exact path="/admin/member" component={Members} />
-          <Route exact path="/admin/payment" component={Payment} />
+          <Route exact path="/admin/payments" component={Payments} />
           <Route exact path="/admin/report" component={Report} />
         </>
       );
     }
   };
 
-  renderRoutes = () => {
-    if (this.props.user.cookieChecked) {
+  renderProtectedRoutes = () => {
+    if (this.props.user.id) {
       return (
         <>
           <Route exact path="/cart" component={Cart} />
-          <Route exact path="/wishlist" component={Wishlist} />
           <Route exact path="/history" component={History} />
         </>
       );
@@ -74,7 +74,7 @@ class App extends React.Component {
               component={ProductDetails}
             />
             {this.renderAdminRoutes()}
-            {this.renderRoutes()}
+            {this.renderProtectedRoutes()}
             <Route path="*" component={PageNotFound} />
           </Switch>
           <div style={{ height: "120px" }} />
@@ -107,4 +107,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
  * 4. Di cart, buat button checkout, serta dengan proses checkout
  * 5. Ketika confirm checkout, lakukan POST request ke db.json ke transaction
  *    -> lalu cart harus kosong
+ *
+ * TRANSACTIONS
+ * userId
+ * total price
+ * status -> "pending"
+ * tanggal belanja
+ * tanggal selesai -> ""
+ *
+ * TRANSACTION_DETAILS
+ * transactionId
+ * productId
+ * price
+ * quantity
+ * totalPrice (price * quantity)
+ *
  */

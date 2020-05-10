@@ -1,249 +1,151 @@
 import React from "react";
-import { connect } from "react-redux";
-import "./History.css";
-import ButtonUI from "../../components/Button/Button";
-import { Link } from "react-router-dom";
 import Axios from "axios";
+import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import { connect } from "react-redux";
 import { API_URL } from "../../../constants/API";
+import ButtonUI from "../../components/Button/Button";
 import swal from "sweetalert";
-import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
 class History extends React.Component {
   state = {
-    historyData: [],
-    detailData: [],
-    productList: [],
+    historyList: [],
+    transactionDetailsList: [],
     modalOpen: false,
   };
 
-  componentDidMount() {
-    this.getHistoryData();
-  }
-
-  toggleModal = () => {
-    this.setState({ modalOpen: !this.state.modalOpen });
-  };
-
-  getHistoryData = () => {
+  getHistoryList = () => {
     Axios.get(`${API_URL}/transactions`, {
       params: {
         userId: this.props.user.id,
-      },
-    })
-      .then((res) => {
-        // console.log(res.data);
-        this.setState({ historyData: res.data });
-        // console.log(this.state.itemsData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  payBtnHandler = (idIndex) => {
-    const now = new Date();
-    const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
-    Axios.get(`${API_URL}/transactions`, {
-      params: {
-        id: idIndex,
-      },
-    })
-      .then((res) => {
-        Axios.patch(`${API_URL}/transactions/${idIndex}`, {
-          status: "On Progress",
-          paymentDate: date,
-        })
-          .then((res) => {
-            swal(
-              "Success!",
-              "Your payment success. Please wait for admin confirmation",
-              "success",
-              {
-                button: { value: true },
-              }
-            ).then(() => {
-              this.getHistoryData();
-            });
-          })
-          .catch((err) => {
-            swal(
-              "Error!",
-              "Sorry, your payment unsuccess. Please try again.",
-              "error"
-            );
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  renderHistoryData = () => {
-    return this.state.historyData.map((val, idx) => {
-      const {
-        id,
-        totalPrice,
-        orderDate,
-        paymentDate,
-        finishDate,
-        status,
-        shipping,
-      } = val;
-      return (
-        <>
-          <tr>
-            <td>{id}</td>
-            <td>
-              {new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-              }).format(totalPrice)}
-            </td>
-            <td>{status}</td>
-            <td>
-              {status === "Pending" ? (
-                <ButtonUI
-                  type="contained"
-                  onClick={() => this.payBtnHandler(id)}
-                >
-                  Pay
-                </ButtonUI>
-              ) : (
-                <ButtonUI type="disabled">Pay</ButtonUI>
-              )}
-              <ButtonUI
-                type="textual"
-                className="mt-3"
-                onClick={() => this.renderDetail(idx)}
-              >
-                Detail
-              </ButtonUI>
-            </td>
-          </tr>
-        </>
-      );
-    });
-  };
-
-  renderDetail = (idx) => {
-    Axios.get(`${API_URL}/transactions`, {
-      params: {
-        id: this.state.historyData[idx].id,
         _embed: "transactionDetails",
+        status: "completed",
       },
     })
       .then((res) => {
-        // console.log(res.data[0].transactionDetails);
-        this.setState({
-          detailData: res.data[0],
-          productList: res.data[0].transactionDetails,
-          modalOpen: true,
-        });
-        // console.log(this.state.productList)
+        this.setState({ historyList: res.data });
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  renderModalProduct = () => {
-    return this.state.productList.map((val) => {
-      // console.log(val);
-      const { productId, quantity, total, price } = val;
+  getTransactionDetails = (transactionId) => {
+    Axios.get(`${API_URL}/transactionDetails`, {
+      params: {
+        transactionId,
+        _expand: "product",
+      },
+    })
+      .then((res) => {
+        this.setState({ transactionDetailsList: res.data, modalOpen: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  renderPayments = () => {
+    return this.state.historyList.map((val) => {
+      const date = new Date(val.completedDate);
       return (
         <tr>
-          <td>{productId}</td>
           <td>
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            }).format(price)}
+            {" "}
+            {date.getDate()}-{date.getMonth() + 1}-{date.getFullYear()}{" "}
           </td>
-          <td>{quantity}</td>
+          <td> {val.totalPrice} </td>
           <td>
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            }).format(total)}
+            {" "}
+            <ButtonUI onClick={() => this.getTransactionDetails(val.id)}>
+              View Details
+            </ButtonUI>{" "}
           </td>
         </tr>
       );
     });
   };
 
+  renderTransactionDetails = () => {
+    return this.state.transactionDetailsList.map((val) => {
+      const { product, quantity, price } = val;
+      const { image, category, productName, desc } = product;
+
+      return (
+        <div className="d-flex justify-content-around align-items-center">
+          <div className="d-flex">
+            <img src={image} alt="" />
+            <div className="d-flex flex-column ml-4 justify-content-center">
+              <h5>
+                {productName} ({quantity})
+              </h5>
+              <h6 className="mt-2">
+                Category:
+                <span style={{ fontWeight: "normal" }}> {category}</span>
+              </h6>
+              <h6>
+                Price:
+                <span style={{ fontWeight: "normal" }}>
+                  {" "}
+                  {new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(price)}
+                </span>
+              </h6>
+              <h6>
+                Description:
+                <span style={{ fontWeight: "normal" }}> {desc}</span>
+              </h6>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  };
+
+  toggleModal = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
+  };
+
+  componentDidMount() {
+    this.getHistoryList();
+  }
+
   render() {
-    const {
-      orderDate,
-      paymentDate,
-      finishDate,
-      shipping,
-      transactionDetails,
-    } = this.state.detailData;
     return (
-      <>
-        <div className="container py-4">
-          <div className="history">
-            <caption className="p-3">
-              <h2>History</h2>
-            </caption>
-            <table className="history-table">
-              <thead>
-                <tr>
-                  <td>Purchased ID</td>
-                  <td>Total Price</td>
-                  <td>Status</td>
-                  <td>Action</td>
-                  {/* <td>No</td> */}
-                  {/* <td>Purchased Item</td> */}
-                </tr>
-              </thead>
-              <tbody>{this.renderHistoryData()}</tbody>
-            </table>
+      <div className="container py-4">
+        <div className="row">
+          <div className="col-12">
+            <div className="dashboard">
+              <caption className="p-3">
+                <h2>History</h2>
+              </caption>
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Total Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>{this.renderPayments()}</tbody>
+              </table>
+            </div>
           </div>
         </div>
         <Modal
+          className="edit-modal"
           toggle={this.toggleModal}
           isOpen={this.state.modalOpen}
-          className="edit-modal"
         >
           <ModalHeader toggle={this.toggleModal}>
             <caption>
-              <h3>Detail Transaction</h3>
+              <h3>Transaction Details</h3>
             </caption>
           </ModalHeader>
-          <ModalBody>
-            <div>Order Date: {orderDate}</div>
-            <div>Payment Date: {paymentDate}</div>
-            <div>Finish Date: {finishDate}</div>
-            <div>Shipping cost: {shipping}</div>
-            <div>Product:</div>
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Product ID</th>
-                    <th>Price</th>
-                    <th>Qty</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>{this.renderModalProduct()}</tbody>
-              </table>
-            </div>
-            <div></div>
-            <div>
-              <ButtonUI
-                className="w-100"
-                onClick={this.toggleModal}
-                type="outlined"
-              >
-                Close
-              </ButtonUI>
-            </div>
-          </ModalBody>
+          <ModalBody>{this.renderTransactionDetails()}</ModalBody>
         </Modal>
-      </>
+      </div>
     );
   }
 }

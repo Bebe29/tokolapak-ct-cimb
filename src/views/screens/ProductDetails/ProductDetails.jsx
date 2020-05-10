@@ -7,6 +7,7 @@ import ButtonUI from "../../components/Button/Button";
 import TextField from "../../components/TextField/TextField";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
+import { fillCart } from "../../../redux/actions";
 
 import { inCart } from "../../../redux/actions";
 
@@ -29,111 +30,52 @@ class ProductDetails extends React.Component {
   };
 
   addToCartHandler = () => {
+    // POST method ke /cart
+    // Isinya: userId, productId, quantity
+    // console.log(this.props.user.id);
+
     Axios.get(`${API_URL}/carts`, {
       params: {
         userId: this.props.user.id,
         productId: this.state.productData.id,
       },
-    })
-      .then((res) => {
-        const { id, qtyInCart } = this.props.user;
-        this.setState({ cartData: res.data[0] });
-        if (res.data.length > 0) {
-          const { quantity } = this.state.cartData;
-          Axios.patch(`${API_URL}/carts/${this.state.cartData.id}`, {
-            quantity: quantity + 1,
+    }).then((res) => {
+      if (res.data.length) {
+        Axios.put(`${API_URL}/carts/${res.data[0].id}`, {
+          userId: this.props.user.id,
+          productId: this.state.productData.id,
+          quantity: res.data[0].quantity + 1,
+        })
+          .then((res) => {
+            swal(
+              "Add to cart",
+              "Your item has been added to your cart",
+              "success"
+            );
+            this.props.onFillCart(this.props.user.id);
           })
-            .then((res) => {
-              // this.props.inCart(id, qtyInCart + 1);
-              swal(
-                "Add to cart",
-                "Your item has been added to your cart",
-                "success"
-              );
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        } else {
-          Axios.post(`${API_URL}/carts`, {
-            userId: this.props.user.id,
-            productId: this.state.productData.id,
-            quantity: 1,
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        Axios.post(`${API_URL}/carts`, {
+          userId: this.props.user.id,
+          productId: this.state.productData.id,
+          quantity: 1,
+        })
+          .then((res) => {
+            swal(
+              "Add to cart",
+              "Your item has been added to your cart",
+              "success"
+            );
+            this.props.onFillCart(this.props.user.id);
           })
-            .then((res) => {
-              this.props.inCart(id, qtyInCart + 1);
-              swal(
-                "Add to cart",
-                "Your item has been added to your cart",
-                "success"
-              );
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  addToWishlist = () => {
-    Axios.get(`${API_URL}/wishlists`, {
-      params: {
-        userId: this.props.user.id,
-      },
-    })
-      .then((res) => {
-        if (res.data.length > 0) {
-          this.setState({ wishlistId: res.data[0].id });
-          console.log(this.state.wishlistId);
-          Axios.post(`${API_URL}/wishlistDetails`, {
-            wishlistId: this.state.wishlistId,
-            productId: this.state.productData.id,
-          })
-            .then((res) => {
-              // console.log(res.data);
-              swal(
-                "Add to wishlist",
-                "Your item has been added to your wishlist",
-                "success"
-              );
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        } else {
-          Axios.post(`${API_URL}/wishlists`, {
-            userId: this.props.user.id,
-          })
-            .then((res) => {
-              console.log(res.data);
-              this.setState({ wishlistId: res.data[0].id });
-              console.log(this.state.wishlistId);
-              Axios.post(`${API_URL}/wishlistDetails`, {
-                wishlistId: this.state.wishlistId,
-                productId: this.state.productData.id,
-              })
-                .then((res) => {
-                  swal(
-                    "Add to wishlist",
-                    "Your item has been added to your wishlist",
-                    "success"
-                  );
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
 
   componentDidMount() {
@@ -199,7 +141,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  inCart,
+  onFillCart: fillCart,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

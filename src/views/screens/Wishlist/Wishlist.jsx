@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 import swal from "sweetalert";
-import { inCart } from "../../../redux/actions";
+import { fillCart } from "../../../redux/actions";
 
 class Wishlist extends React.Component {
   state = {
@@ -206,7 +206,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  inCart,
+  // inCart,
+  fillCart,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wishlist);

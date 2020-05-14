@@ -12,6 +12,8 @@ import ButtonUI from "../../components/Button/Button";
 import { Link } from "react-router-dom";
 import { priceFormatter } from "../../../supports/helpers/formatter";
 import { fillCart } from "../../../redux/actions";
+import swal from "sweetalert";
+import { connect } from "react-redux";
 
 class Cart extends React.Component {
   state = {

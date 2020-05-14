@@ -21,9 +21,8 @@ import PageNotFound from "./views/screens/PageNotFound/PageNotFound";
 
 import { userKeepLogin, cookieChecker } from "./redux/actions";
 import Payments from "./views/screens/Admin/Payments";
-import PageNotFound from "./views/screens/PageNotFound";
-import History from "./views/screens/History/History";
-import Report from "./views/screens/Admin/Report";
+// import History from "./views/screens/History/History";
+// import Report from "./views/screens/Admin/Report";
 
 const cookieObj = new Cookie();
 

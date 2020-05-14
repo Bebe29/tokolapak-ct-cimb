@@ -21,7 +21,6 @@ import ButtonUI from "../../components/Button/Button";
 import CarouselShowcaseItem from "./CarouselShowcaseItem.tsx";
 import Colors from "../../../constants/Colors";
 import { API_URL } from "../../../constants/API";
-import { connect } from "react-redux";
 
 const dummy = [
   {

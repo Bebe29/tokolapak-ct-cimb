@@ -16,7 +16,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 import "./Navbar.css";
 import ButtonUI from "../Button/Button";
-import { logoutHandler, navbarInputHandler } from "../../../redux/actions";
+import { logoutHandler, navbarInputHandler, registerHandler } from "../../../redux/actions";
 
 const CircleBg = ({ children }) => {
   return <div className="circle-bg">{children}</div>;
@@ -52,10 +52,10 @@ class Navbar extends React.Component {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
   };
 
-  setPage = (text) => {
-    this.props.signInRegister(text);
-    // console.log(this.props.user.signPage);
-  };
+  // setPage = (text) => {
+  //   this.props.signInRegister(text);
+  //   // console.log(this.props.user.signPage);
+  // };
 
   render() {
     return (
@@ -153,7 +153,7 @@ class Navbar extends React.Component {
                 <Link
                   style={{ textDecoration: "none", color: "inherit" }}
                   to="/auth"
-                  onClick={() => this.setPage("login")}
+                  // onClick={() => this.setPage("login")}
                 >
                   Sign in
                 </Link>
@@ -162,7 +162,7 @@ class Navbar extends React.Component {
                 <Link
                   style={{ textDecoration: "none", color: "inherit" }}
                   to="/auth"
-                  onClick={() => this.setPage("register")}
+                  // onClick={() => this.setPage("register")}
                 >
                   Sign up
                 </Link>

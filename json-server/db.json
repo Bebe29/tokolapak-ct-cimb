@@ -115,7 +115,14 @@
       "id": 8
     }
   ],
-  "carts": [],
+  "carts": [
+    {
+      "userId": 1,
+      "productId": 11,
+      "quantity": 1,
+      "id": 1
+    }
+  ],
   "transactions": [
     {
       "userId": 4,

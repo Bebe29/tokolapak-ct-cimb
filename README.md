@@ -1,5 +1,3 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Final Project
 
 Rancangan untuk final project
@@ -22,3 +20,7 @@ Memudahkan konsumen untuk memenuhi kebutuhan hewan peliharaan kesayangannya dan 
 
 1. Admin melakukan update produk baru atau update produk yang sekarang ada
 2. Admin melakukan update jadwal grooming
+
+### Link GitHub untuk final project
+
+https://github.com/Bebe29/final-project
